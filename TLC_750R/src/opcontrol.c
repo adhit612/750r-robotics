@@ -31,41 +31,53 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	int x, y;
+	int x, y, z;
 	int LIMITER = 20;
 
 	while (true) {
-
-		if(joystickGetAnalog(JOYSTICK, H_AXIS) >= LIMITER) {
-			x = -joystickGetAnalog(JOYSTICK, H_AXIS);
+		if(abs(joystickGetAnalog(JOYSTICK, H_AXIS)) >= LIMITER) {
+			x = joystickGetAnalog(JOYSTICK, H_AXIS);
 		} else {
 			x = 0;
 		}
 
-		if(joystickGetAnalog(JOYSTICK, V_AXIS) >= LIMITER) {
-			y = joystickGetAnalog(JOYSTICK, V_AXIS);
+		if(abs(joystickGetAnalog(JOYSTICK, V_AXIS)) >= LIMITER) {
+			y = -joystickGetAnalog(JOYSTICK, V_AXIS);
 		} else {
 			y = 0;
 		}
 
 		drive(x, y);
 
-		if(joystickGetDigital(JOYSTICK, 6, JOY_UP)) {
-			launch();
-		}
-
 		if(joystickGetDigital(JOYSTICK, 5, JOY_UP)) {
-			intake(127);
-		} else if(joystickGetDigital(JOYSTICK, 5, JOY_DOWN)) {
 			intake(-127);
+		} else if(joystickGetDigital(JOYSTICK, 5, JOY_DOWN)) {
+			intake(127);
 		} else {
 			intake(0);
 		}
+
+		if(abs(joystickGetAnalog(JOYSTICK, VLEFT_AXIS)) >=LIMITER) {
+			z = (int)(.25*joystickGetAnalog(JOYSTICK, VLEFT_AXIS));
+		}
+		else {
+			z = 0;
+		}
+		carry(z);
 
 		if(joystickGetDigital(JOYSTICK, 8, JOY_UP)) {
 			auton();
 		}
 
-	}
+		if(joystickGetDigital(JOYSTICK, 6, JOY_UP)) {
+			launch(127);
+		}
+		else if(joystickGetDigital(JOYSTICK, 6, JOY_DOWN)){
+			launch(-127);
+		}
+		else {
+			launch(0);
+		}
 
+	}
 }
