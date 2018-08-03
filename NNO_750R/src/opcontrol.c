@@ -31,46 +31,24 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
 void operatorControl() {
-	int driving, steering;
-	int LIMITER = 20;
-	
-	while (true) {
-		
-		//Test axis 3 (left stick, up-down) for forward/backward input
+	int driving;
+	double steering;	
+	int LIMITER = 20;	
+
+	while (1) {
 		if(abs(joystickGetAnalog(JOYSTICK, DRIVE_AXIS)) >= LIMITER) {
 			driving = joystickGetAnalog(JOYSTICK, DRIVE_AXIS);
 		} else {
 			driving = 0;
 		}
-		
-		//Test axis 1 (right stick, left-right) for left/right steering input
+
 		if(abs(joystickGetAnalog(JOYSTICK, STEER_AXIS)) >= LIMITER) {
-			steering = joystickGetAnalog(JOYSTICK, STEER_AXIS);
+			steering = 0.25 * joystickGetAnalog(JOYSTICK, STEER_AXIS);
 		} else {
 			steering = 0;
 		}
-		
-		//Set motors with inputs
+
 		drive(driving);
 		steer(steering);
-		
-		//Idling auton
-		if(joystickGetDigital(JOYSTICK, 7, JOY_UP)) {
-			drive(0);
-			steer(0);
-			delay(1000);
-			
-			//Drives forwards and backwards until auto button pressed again
-			while(!joystickGetDigital(JOYSTICK, 7, JOY_UP)) {
-				drive(127);
-				delay(1000);
-				drive(0);
-				delay(200);
-				drive(-127);
-				delay(1000);
-				drive(0);
-				delay(200);
-			}
-		}
 	}
 }

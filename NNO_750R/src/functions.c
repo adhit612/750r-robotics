@@ -5,6 +5,6 @@ void drive(int driving) {
 	motorSet(DRIVE_MOTOR, driving);
 }
 
-void steer(int steering) {
-	motorSet(STEERING_MOTOR, steering);	
+void steer(double steering) {
+	motorSet(STEERING_MOTOR, steering);
 }
