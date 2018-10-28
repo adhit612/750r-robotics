@@ -1,0 +1,76 @@
+body {
+	background-color: black;
+}
+
+h1, h2, p, a, ul {
+	font-family: Georgia;
+	line-height: 25px;
+}
+
+h1, h2 { 
+	color: rgb(253, 201, 39);
+	text-transform: uppercase;
+}
+
+h1 {
+	padding-top: 100px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 45px;
+}
+
+h2 {
+	font-size: 30px;
+}
+
+p, a, ul {
+	color: white;
+	font-size: 20px;
+}
+
+nav a {
+	float: left;
+	padding: 10px;
+	text-decoration: none;
+}
+
+nav a.active {
+	background-color: #454545;
+}
+
+nav a:hover {
+	background-color: #707070;
+	color: rgb(253, 201, 39);
+}
+
+nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	background-color: #202020;
+	margin: 0;
+	padding: 10px;
+}
+
+.info {
+	text-align: center;
+	width: 75%;
+	margin: auto;
+	padding-bottom: 200px;
+}
+
+img {
+	height: 400px;
+	width: 400px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.image {
+	background-color: #505050;
+	width: 100%;
+	margin: auto;
+}
