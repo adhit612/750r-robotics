@@ -2,7 +2,7 @@ body {
 	background-color: black;
 }
 
-h1, h2, p, a, ul {
+h1, h2, h3, p, a, ul {
 	font-family: Georgia;
 	line-height: 25px;
 }
@@ -23,9 +23,18 @@ h2 {
 	font-size: 30px;
 }
 
-p, a, ul {
+p, ul {
 	color: white;
 	font-size: 20px;
+}
+
+a {
+	color: rgb(253, 201, 39);
+	font-size: 20px;
+}
+
+h3 {
+	color: white;
 }
 
 nav a {
@@ -45,6 +54,7 @@ nav a:hover {
 
 nav {
 	position: fixed;
+	z-index: 1;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -52,13 +62,22 @@ nav {
 	background-color: #202020;
 	margin: 0;
 	padding: 10px;
+	overflow: hidden;
 }
 
 .info {
 	text-align: center;
 	width: 75%;
 	margin: auto;
+	padding-bottom: 50px;
+}
+
+.bottom {
 	padding-bottom: 200px;
+}
+
+.top {
+	padding-top: 75px;
 }
 
 img {
@@ -67,10 +86,81 @@ img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.carousel {
+	height: 450px;
+	width: 800px;
+	display: inline;
+	
 }
 
 .image {
 	background-color: #505050;
 	width: 100%;
 	margin: auto;
+}
+
+button {
+	height: 100px;
+	width: 50px;
+	display: inline;
+	position: relative;
+	bottom: 250px;
+	background-color: rgb(253, 201, 39);
+	border: none;
+}
+
+.left-button {
+	float: left;
+	margin-left: 100px;
+}
+
+.right-button {
+	float: right;
+	margin-right: 100px;
+}
+
+.row {
+	padding-bottom: 400px;
+}
+
+.column {
+	background-color: #505050;
+	display: inline;
+	float: left;
+	width: 23.3%;
+	margin-left: 5%;
+	margin-right: 5%;
+	height: 350px;
+}
+
+.column img {
+	width: 150px;
+	height: 150px;
+	box-shadow: 10px 10px 5px;
+	margin-top: 25px;
+	padding: 0px 0px 0px 0px;
+}
+
+.column h3 {
+	text-align: center;
+	text-decoration: underline;
+}
+
+.column ul {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+footer {
+	text-align: center;
+}
+
+footer p, footer a {
+	font-size: 15px;
+	line-height: 10px;
 }
