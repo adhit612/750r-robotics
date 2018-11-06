@@ -164,3 +164,22 @@ footer p, footer a {
 	font-size: 15px;
 	line-height: 10px;
 }
+
+form {
+	color: white;
+	font-size: 20px;
+	text-align: center;
+	margin: auto;
+	width: 25%;
+}
+
+php {
+	color: white;
+}
+
+#firebase-auth {
+	width: 500px;
+	height: 20%;
+	display: block;
+	margin: auto;
+}
