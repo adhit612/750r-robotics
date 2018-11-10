@@ -167,19 +167,19 @@ footer p, footer a {
 
 form {
 	color: white;
+	display: block;
 	font-size: 20px;
-	text-align: center;
+	text-align: left;
 	margin: auto;
 	width: 25%;
 }
 
-php {
-	color: white;
+input {
+	width: 100%;
 }
 
-#firebase-auth {
-	width: 500px;
-	height: 20%;
-	display: block;
-	margin: auto;
+#login {
+	width: 25%;
+	margin-left: 37.5%;
+	margin-right: 37.5%;
 }
