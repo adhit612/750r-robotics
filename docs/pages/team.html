@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="..\style.css">
   <link rel="icon" href="..\favicon.ico">
   <script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
-  <script src="..\login.js"></script>
+  <script src="..\logout.js"></script>
 </head>
 
 <body>
@@ -20,10 +20,12 @@
 	<a class="active" href="">Log-In</a>
   </nav>
   
-  <h1>Team Log-In</h1>
+  <h1>Team Page</h1>
   <div class="info" id="sign-out">
-	<button type="button" id="sign-in" onClick="signIn()">Log In</button>
+	<button type="button" id="sign-in" onClick="signOut()">Log Out</button>
   </div>
+  
+  <p id="username"></p>
   
 </body>
 
