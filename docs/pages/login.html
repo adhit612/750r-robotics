@@ -23,8 +23,18 @@
   <p id="sign-in">Sign In</p>
   
   <script>
-    firebase.initializeApp({apiKey: "AIzaSyCoG_una82nRQEDDwlnLS2Br_fLlEolNeM",authDomain: "sparks-750.firebaseapp.com",databaseURL: "https://sparks-750.firebaseio.com",projectId: "sparks-750",storageBucket: "",messagingSenderId: "765237982504"});
-	var provider = new firebase.auth.GoogleAuthProvider();
+    // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCjs-YBtyd3D8r2w8qbaRsLY0mFCEFZumQ",
+    authDomain: "r-log-in.firebaseapp.com",
+    databaseURL: "https://r-log-in.firebaseio.com",
+    projectId: "r-log-in",
+    storageBucket: "r-log-in.appspot.com",
+    messagingSenderId: "847645178492"
+  };
+  firebase.initializeApp(config);
+
+    var provider = new firebase.auth.GoogleAuthProvider();
 	//firebase.auth().languageCode = 'pt';
 
 	let signInBtn = document.getElementById("sign-in");
