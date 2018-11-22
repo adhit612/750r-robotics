@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="..\style.css">
   <link rel="icon" href="..\favicon.ico">
   <script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
-  <script src="..\logout.js"></script>
 </head>
 
 <body>
@@ -15,18 +14,20 @@
   <nav>
     <a href="../index.html">Home</a>
 	<a href="bios.html">Bios</a>
-	<a href="">Sponsors</a>
+	<a href="sponsors.html">Sponsors</a>
 	<a href="">Competitions</a>
 	<a class="active" href="">Log-In</a>
   </nav>
   
-  <h1>Team Page</h1>
-  <div class="info" id="sign-out">
-	<button type="button" id="sign-in" onClick="signOut()">Log Out</button>
+  <h1>Team</h1>
+  <div class="info">
+	<img id="pfp" src=""></img>
+	<p id="username"></p>
+	
+	<button type="button" id="horiz-btn" onClick="signOut()">Log Out</button>
   </div>
   
-  <p id="username"></p>
-  
+  <script src="..\logout.js"></script>
 </body>
 
 </html>
