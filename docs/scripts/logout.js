@@ -17,10 +17,10 @@ firebase.auth().onAuthStateChanged(function(user) {
 	if(user) {
 		console.log("SIGN IN");
 		var username = user.displayName;
-		var photoUrl = user.photoURL;
+		var photoURL = user.photoURL;
 		
-		document.getElementById("username").innerHTML = "Welcome<br/>~ " + username + " ~";
-		document.getElementById("pfp").src = photoUrl;
+		document.getElementById("username").innerHTML = "~ " + username + " ~";
+		document.getElementById("pfp").src = photoURL;
 		
 	} else {
 		console.log("SIGN OUT");

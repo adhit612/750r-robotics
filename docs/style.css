@@ -229,3 +229,8 @@ input {
 	border: 10px solid rgb(253, 201, 39);
 	border-radius: 100%;
 }
+
+.countdown p {
+	font-size: 40px;
+	display: inline;
+}

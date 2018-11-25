@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="..\style.css">
   <link rel="icon" href="..\favicon.ico">
   <script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
-  <script src="..\login.js"></script>
 </head>
 
 <body>
@@ -16,14 +15,16 @@
     <a href="../index.html">Home</a>
 	<a href="bios.html">Bios</a>
 	<a href="sponsors.html">Sponsors</a>
-	<a href="">Competitions</a>
+	<a href="comp.html">Competitions</a>
 	<a class="active" href="">Log-In</a>
   </nav>
   
   <h1>Team Log-In</h1>
-  <div class="info">
-	<button type="button" id="sign-in" onClick="signIn()">Log In</button>
+  <div id="profile" class="info top">
+	<button type="button" id="horiz-btn" onClick="signIn()">Log In</button>
   </div>
+  
+  <script src="../scripts/login.js"></script>
   
 </body>
 
