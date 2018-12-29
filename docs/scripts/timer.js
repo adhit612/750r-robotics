@@ -1,4 +1,4 @@
-var end = Date.parse("December 1, 2018 07:00:00");
+var end = Date.parse("January 19, 2019 07:00:00");
 
 setInterval(function() {
 	var now = Date.now();
