@@ -1,4 +1,7 @@
 #include "main.h"
+#include "config.h"
+#include "robot.h"
+#include <vector>
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -13,19 +16,14 @@
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+ 
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
-
-		left_mtr = left;
-		right_mtr = right;
+	pros::Controller primary = pros::Controller(pros::E_CONTROLLER_MASTER);
+	Robot robot(D_MOTOR_FL, D_MOTOR_BL, D_MOTOR_FR, D_MOTOR_BR);
+	
+	while (true) {	
+		robot.drive(primary.get_analog(ANALOG_RIGHT_X), primary.get_analog(ANALOG_LEFT_Y));
+		
 		pros::delay(20);
 	}
 }
