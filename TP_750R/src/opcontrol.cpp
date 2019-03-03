@@ -19,11 +19,25 @@
 
 void opcontrol() {
 	pros::Controller primary = pros::Controller(pros::E_CONTROLLER_MASTER);
-	Robot robot(D_MOTOR_FL, D_MOTOR_BL, D_MOTOR_FR, D_MOTOR_BR);
+	pros::Controller auxiliary = pros::Controller(pros::E_CONTROLLER_PARTNER);
+	
+	Robot robot(D_MOTOR_FL, D_MOTOR_BL, D_MOTOR_FR, D_MOTOR_BR,
+				INTAKE_PORT, FLYWHEEL_PORT, INDEXER_PORT, LIFT_PORT);
 	robot.setAutonIndex(autonIndex);
 	
 	while (true) {	
+		
 		robot.drive(primary.get_analog(ANALOG_RIGHT_X), primary.get_analog(ANALOG_LEFT_Y));
+		
+		if(primary.get_digital(DIGITAL_L1)) {
+			robot.intake(INTAKE_MODE_IN);
+		} else if(primary.get_digital(DIGITAL_L2)) {
+			robot.intake(INTAKE_MODE_OUT);
+		} else {
+			robot.intake(INTAKE_MODE_STOP);
+		}
+		
+		robot.lift(auxiliary.get_analog(ANALOG_RIGHT_Y));
 		
 		pros::delay(20);
 	}
