@@ -63,11 +63,11 @@
             "-fdiagnostics-color",
             "--std=gnu++17",
             "-o",
-            "bin/initialize.cpp.o",
-            "src\\initialize.cpp"
+            "bin/robot.cpp.o",
+            "src\\robot.cpp"
         ],
         "directory": "C:\\Users\\mihir\\Desktop\\projects\\750R-Robotics\\TP_750R",
-        "file": "src\\initialize.cpp"
+        "file": "src\\robot.cpp"
     },
     {
         "arguments": [
@@ -133,10 +133,10 @@
             "-fdiagnostics-color",
             "--std=gnu++17",
             "-o",
-            "bin/robot.cpp.o",
-            "src\\robot.cpp"
+            "bin/initialize.cpp.o",
+            "src\\initialize.cpp"
         ],
         "directory": "C:\\Users\\mihir\\Desktop\\projects\\750R-Robotics\\TP_750R",
-        "file": "src\\robot.cpp"
+        "file": "src\\initialize.cpp"
     }
 ]

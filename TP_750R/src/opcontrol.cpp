@@ -16,10 +16,11 @@
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
- 
+
 void opcontrol() {
 	pros::Controller primary = pros::Controller(pros::E_CONTROLLER_MASTER);
 	Robot robot(D_MOTOR_FL, D_MOTOR_BL, D_MOTOR_FR, D_MOTOR_BR);
+	robot.setAutonIndex(autonIndex);
 	
 	while (true) {	
 		robot.drive(primary.get_analog(ANALOG_RIGHT_X), primary.get_analog(ANALOG_LEFT_Y));

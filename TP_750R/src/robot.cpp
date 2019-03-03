@@ -2,7 +2,7 @@
 #include "robot.h"
 #include <vector>
 
-Robot::Robot(const int portFL, const int portBL, const int portFR, const int portBR) : driveMotors() {
+Robot::Robot(const int portFL, const int portBL, const int portFR, const int portBR) : driveMotors(), autonIndex(0) {
 	driveMotors.push_back(pros::Motor(portFL));
 	driveMotors.push_back(pros::Motor(portBL));
 	driveMotors.push_back(pros::Motor(portFR));
@@ -18,4 +18,8 @@ void Robot::drive(int x, int y) {
 			m.move_velocity(y - x);
 		}
 	}
+}
+
+void Robot::setAutonIndex(int index) {
+	autonIndex = index;
 }

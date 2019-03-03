@@ -5,3 +5,5 @@
 #define D_MOTOR_BL 15
 #define D_MOTOR_FR 1
 #define D_MOTOR_BR 3
+
+extern int autonIndex;
