@@ -1,4 +1,6 @@
 #include "main.h"
+#include "config.h"
+#include "robot.h"
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -11,4 +13,16 @@
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	/*
+	Robot robot(D_MOTOR_FL, D_MOTOR_BL, D_MOTOR_FR, D_MOTOR_BR,
+				INTAKE_PORT, FLYWHEEL_PORT, INDEXER_PORT, LIFT_PORT, GYRO_PORT);
+	robot.setAutonIndex(0);
+	
+	robot.startFlywheel();
+	robot.startFieldPosition();
+	
+	robot.turnTo(90, 100);
+	pros::Controller(pros::E_CONTROLLER_MASTER).print(2, 0, "DONE");
+	*/
+}
