@@ -27,34 +27,60 @@
  * This task should never exit; it should end with some kind of infinite loop, even if empty.
  */
  
-#define DRIVE_FL 1
-#define DRIVE_FR 2
+#define DRIVE_FL 2
+#define DRIVE_FR 8
 #define DRIVE_BL 3
-#define DRIVE_BR 4
+#define DRIVE_BR 9
 
-#define SHOULDER 5
-#define ELBOW_1 6
-#define ELBOW_2 7
-#define WRIST 8
+#define SHOULDER 1
+#define ELBOW_1 7
+#define ELBOW_2 5
+#define WRIST 6
  
 void operatorControl() {
+	int x, y;
+	int THRESHOLD = 20;
+	bool isDriving = true;
+	
 	while (1) {
-		motorSet(DRIVE_FL, joystickGetAnalog(1, 3) + joystickGetAnalog(1, 4));
-		motorSet(DRIVE_FR, joystickGetAnalog(1, 3) - joystickGetAnalog(1, 4));
-		motorSet(DRIVE_BL, joystickGetAnalog(1, 3) + joystickGetAnalog(1, 4));
-		motorSet(DRIVE_FR, joystickGetAnalog(1, 3) - joystickGetAnalog(1, 4));
+		if(isDriving) {
+			if(abs(joystickGetAnalog(1, 1)) > THRESHOLD)
+				y = joystickGetAnalog(1, 1) * 70 / 127;
+			else
+				y = 0;
+			
+			if(abs(joystickGetAnalog(1, 3)) > THRESHOLD)
+				x = joystickGetAnalog(1, 3) * 70 / 127;
+			else 
+				x = 0;
 		
-		motorSet(SHOULDER, joystickGetAnalog(1, 2));
+			motorSet(DRIVE_FL, y + x);
+			motorSet(DRIVE_FR, y - x);
+			motorSet(DRIVE_BL, y + x);
+			motorSet(DRIVE_BR, y - x);
+		} else {
+			if(abs(joystickGetAnalog(1, 3)) > THRESHOLD)
+				motorSet(SHOULDER, joystickGetAnalog(1, 3) * 50 / 127);
+			else
+				motorStop(SHOULDER);
+			
+			if(abs(joystickGetAnalog(1, 2)) > THRESHOLD) {
+				motorSet(ELBOW_1, joystickGetAnalog(1, 2) * 50 / 127);
+				motorSet(ELBOW_2, -joystickGetAnalog(1, 2) * 50 / 127);
+			} else {
+				motorStop(ELBOW_1);
+				motorStop(ELBOW_2);
+			}
+			
+		}
 		
 		if(joystickGetDigital(1, 8, JOY_UP)) {
-			motorSet(ELBOW_1, 127);
-			motorSet(ELBOW_2, -127);
-		} else if(joystickGetDigital(1, 8, JOY_DOWN)) {
-			motorSet(ELBOW_1, -127);
-			motorSet(ELBOW_2, 127);
-		} else {
-			motorSet(ELBOW_1, 0);
-			motorSet(ELBOW_2, 0);
+			isDriving = !isDriving;
+			delay(500);
+			motorStop(DRIVE_FL);
+			motorStop(DRIVE_FR);
+			motorStop(DRIVE_BL);
+			motorStop(DRIVE_BR);
 		}
 		
 		if(joystickGetDigital(1, 6, JOY_UP)) {
