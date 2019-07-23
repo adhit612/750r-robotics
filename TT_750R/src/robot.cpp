@@ -38,40 +38,40 @@ void Robot::turnLeft() {
 	}
 }
 
-void Robot::strafeRight(int value)
+void Robot::strafeRight()
 {
 	for(int i = 0; i < driveMotors.size(); i++) {
 		vex::motor m = driveMotors.at(i);
 		if(i==0) {
-			m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
 		} 
     if(i==1) {
-			m.spin(vex::directionType::rev, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::rev, 100, vex::percentUnits::pct);
 		} 
     if(i==2) {
-			m.spin(vex::directionType::rev, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::rev, 100, vex::percentUnits::pct);
 		} 
     if(i==3) {
-			m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
 		} 
 	} 
 }
 
-void Robot::strafeLeft(int value)
+void Robot::strafeLeft()
 {
 	for(int i = 0; i < driveMotors.size(); i++) {
 		vex::motor m = driveMotors.at(i);
 		if(i==0) {
-			m.spin(vex::directionType::rev, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::rev, 100, vex::percentUnits::pct);
 		} 
     if(i==1) {
-			m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
 		} 
     if(i==2) {
-			m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
 		} 
     if(i==3) {
-			m.spin(vex::directionType::rev, value, vex::percentUnits::pct);
+			m.spin(vex::directionType::rev, 100, vex::percentUnits::pct);
 		} 
 	} 
 }
