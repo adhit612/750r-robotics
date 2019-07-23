@@ -15,7 +15,7 @@ class Robot {
 		void drive(int value);
     void turnRight();
     void turnLeft();
-    void strafeRight(int value);
-    void strafeLeft(int value);
+    void strafeRight();
+    void strafeLeft();
 };
 #endif
