@@ -79,8 +79,8 @@ void Robot::liftUp(int value)
 {
   vex::motor m = vex::motor (RIGHT_LIFT_MOTOR,false);
   vex::motor m2 = vex::motor (LEFT_LIFT_MOTOR, true);
-  m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
-  m2.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+  m.spin(vex::directionType::fwd, value/3, vex::percentUnits::pct);
+  m2.spin(vex::directionType::fwd, value/3, vex::percentUnits::pct);
 }
 
 void Robot::liftDown(int value)
@@ -89,4 +89,16 @@ void Robot::liftDown(int value)
   vex::motor m2 = vex::motor (LEFT_LIFT_MOTOR, true);
   m.spin(vex::directionType::fwd, value/3, vex::percentUnits::pct);
   m2.spin(vex::directionType::fwd, value/3, vex::percentUnits::pct);
+}
+
+void Robot::clawOpen()
+{
+  vex::motor m = vex::motor (CLAW_MOTOR,true);
+  m.spin(vex::directionType::fwd, 10, vex::percentUnits::pct);
+}
+
+void Robot::clawClose()
+{
+  vex::motor m = vex::motor (CLAW_MOTOR,true);
+  m.spin(vex::directionType::fwd, -10, vex::percentUnits::pct);
 }
