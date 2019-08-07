@@ -1,6 +1,5 @@
 #include "vex.h"
 #include <vector>
-
 #ifndef ROBOT_H
 #define ROBOT_H
 
@@ -15,7 +14,11 @@ class Robot {
 		void drive(int value);
     void turnRight();
     void turnLeft();
-    void strafeRight();
-    void strafeLeft();
+    void strafeRight(int value);
+    void strafeLeft(int value);
+    void liftUp(int value);
+    void liftDown(int value);
+    void clawOpen();
+    void clawClose();
 };
 #endif
