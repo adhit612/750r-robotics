@@ -14,11 +14,11 @@ class Robot {
 		void drive(int value);
     void turnRight();
     void turnLeft();
-    void strafeRight(int value);
-    void strafeLeft(int value);
+    void strafe(int value);
     void liftUp(int value);
     void liftDown(int value);
     void clawOpen();
     void clawClose();
+    void driveFor();
 };
 #endif
