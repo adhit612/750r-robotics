@@ -69,7 +69,24 @@ void Robot::clawClose()
   m.spin(vex::directionType::fwd, -40, vex::percentUnits::pct);
 }
 
-void::Robot::driveFor()
+void::Robot::driveFor(String motor, double distance)
 {
-  
+  //rotates motors for given value distance
+
+  boolean waitForCompletion = false; 
+
+  vex::motor left = vex::motor (motor,false);
+
+  motor.rotateFor (double distance, rotationUnits units, bool waitForCompletion=true);
+}
+
+void::Robot::reverseFor(String motor, double distance)
+{
+  //rotates motors backwards for given value distance
+
+  boolean waitForCompletion = false; 
+
+  vex::motor left = vex::motor (motor,false);
+
+  motor.rotateFor (double distance, rotationUnits units, bool waitForCompletion=true);
 }
