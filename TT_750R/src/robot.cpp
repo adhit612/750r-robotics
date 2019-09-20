@@ -71,5 +71,11 @@ void Robot::clawClose()
 
 void::Robot::driveFor()
 {
-  
+  //auton drive function
+  boolean waitForCompletion = false; 
+
+for(int i = 0; i < driveMotors.size(); i ++)
+{
+  driveMotors.at(i).rotateFor (double distance, rotationUnits velocity, bool waitForCompletion=true);
+}
 }
