@@ -1,10 +1,9 @@
 #include "vex.h"
 #include <vector>
 
-#define D_MOTOR_FL       vex::PORT14
-#define D_MOTOR_BL       vex::PORT12
-#define D_MOTOR_FR       vex::PORT10
-#define D_MOTOR_BR       vex::PORT15
+#define D_MOTOR_L        vex::PORT16
+#define D_MOTOR_R        vex::PORT15
+#define D_MOTOR_M        vex::PORT10
 #define RIGHT_LIFT_MOTOR vex::PORT18
-#define LEFT_LIFT_MOTOR  vex::PORT13
-#define CLAW_MOTOR       vex::PORT19
+#define LEFT_LIFT_MOTOR  vex::PORT1
+#define MAGAZINE_MOTOR   vex::PORT19
