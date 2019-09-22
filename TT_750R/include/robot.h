@@ -11,14 +11,14 @@ class Robot {
 	public:
 		Robot(vex::brain cortex);
 		
-		void drive(int value);
+    void drive(int value);
     void turnRight();
     void turnLeft();
-    void strafe(int value);
+    void strafe(int mode);
     void liftUp(int value);
     void liftDown(int value);
     void clawOpen();
     void clawClose();
-    void driveFor();
+    void driveFor(double distance, double velocity);
 };
 #endif
