@@ -20,5 +20,7 @@ class Robot {
     void clawOpen();
     void clawClose();
     void driveFor(double distance, double velocity);
+    void magazineForward();
+    void magazineBackward();
 };
 #endif
