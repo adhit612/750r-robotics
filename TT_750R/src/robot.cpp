@@ -64,3 +64,15 @@ void Robot::driveFor(double distance, double velocity) {
     driveMotors.at(i).rotateFor(vex::directionType::fwd, distance, vex::rotationUnits::deg, velocity, vex::velocityUnits::pct);
   }
 }
+
+void::Robot::magazineForward()
+{
+  vex::motor m = vex::motor(MAGAZINE,false);
+  m.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
+  
+}
+void::Robot::magazineBackward()
+{
+  vex::motor m = vex::motor(MAGAZINE,false);
+  m.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
+}
