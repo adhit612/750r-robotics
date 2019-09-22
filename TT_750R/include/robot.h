@@ -11,7 +11,7 @@ class Robot {
 	public:
 		Robot(vex::brain cortex);
 		
-    void drive(int value);
+		void drive(int value);
     void turnRight();
     void turnLeft();
     void strafe(int mode);
@@ -22,5 +22,7 @@ class Robot {
     void driveFor(double distance, double velocity);
     void magazineForward();
     void magazineBackward();
+    void rollOut();
+    void rollIn();
 };
 #endif
