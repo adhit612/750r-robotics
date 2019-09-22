@@ -51,7 +51,6 @@ void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
-
 }
 
 /*---------------------------------------------------------------------------*/
@@ -76,32 +75,18 @@ void usercontrol( void ) {
     // update your motors, etc.
     // ........................................................................
     robot.drive(primary.Axis2.position());
+    
     if(primary.Axis1.position()>50)
-      robot.strafeRight(primary.Axis1.position());
+      robot.strafe(-1);
     else if (primary.Axis1.position()<-50)
-      robot.strafeLeft(primary.Axis1.position());
+      robot.strafe(1);
+    else
+      robot.strafe(0);
 
     if(primary.ButtonR1.pressing())
       robot.turnRight();
     else if(primary.ButtonR2.pressing())
       robot.turnLeft();
-
-    if(primary.Axis3.position()>0)
-    {
-      robot.liftUp(primary.Axis3.position());
-    }
-    else if (primary.Axis3.position()<0) {
-      robot.liftDown(primary.Axis3.position());
-    }
-
-    if(primary.ButtonL1.pressing())
-    {
-      robot.clawOpen();
-    }
-    else if(primary.ButtonL2.pressing())
-    {
-      robot.clawClose();
-    }
 
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
