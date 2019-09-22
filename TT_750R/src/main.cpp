@@ -48,9 +48,24 @@ void pre_auton( void ) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous( void ) {
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
+  vex::motor fL = vex::motor (D_MOTOR_FL,false);
+    vex::motor bL = vex::motor (D_MOTOR_BL,false);
+    vex::motor fR = vex::motor (D_MOTOR_FR,false);
+    vex::motor bR = vex::motor (D_MOTOR_BR,false);
+    vex:: motor magazine = ves::motor (MAG, false);4
+
+    robot.driveFor(fL,720);
+    robot.driveFor(fR,720);
+    robot.driveFor(bL,720);
+    robot.driveFor(bR,720);
+
+    robot.turnLeft();
+    robot.turnRight();
+
+    robot.reverseFor(fL,-720);
+    robot.reverseFor(fR,-720);
+    robot.reverseFor(bL,-720);
+    robot.reverseFor(bR,-720);
 }
 
 /*---------------------------------------------------------------------------*/
