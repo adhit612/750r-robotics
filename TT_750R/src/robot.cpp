@@ -11,7 +11,10 @@ Robot::Robot(vex::brain cortex) : cortex(cortex), driveMotors() {
 void Robot::drive(int value) {
 	for(int i = 0; i < driveMotors.size(); i++) {
 		vex::motor m = driveMotors.at(i);
-		m.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
+    if(value==0)
+      m.setBrake(vex::brake);
+    else
+		  m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
 	}
 }
 
@@ -65,14 +68,30 @@ void Robot::driveFor(double distance, double velocity) {
   }
 }
 
-void::Robot::magazineForward()
+void Robot::magazineForward()
 {
-  vex::motor m = vex::motor(MAGAZINE_MOTOR,false);
+  vex::motor m = vex::motor(MAGAZINE_MOTOR);
   m.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
   
 }
-void::Robot::magazineBackward()
+void Robot::magazineBackward()
 {
-  vex::motor m = vex::motor(MAGAZINE_MOTOR,false);
+  vex::motor m = vex::motor(MAGAZINE_MOTOR);
   m.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
+}
+
+void Robot::rollOut()
+{
+  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR,false);
+  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR);
+  m.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
+  m2.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
+}
+
+void Robot::rollIn()
+{
+  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR,false);
+  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR);
+  m.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
+  m2.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
 }
