@@ -87,6 +87,17 @@ void usercontrol( void ) {
       robot.turnRight();
     else if(primary.ButtonR2.pressing())
       robot.turnLeft();
+    
+    if(primary.ButtonY.pressing())
+    {
+      //Button subject to change
+      robot.magazineForward();
+    }
+    else if(primary.ButtonY.pressing())
+    {
+      //Button subject to change
+      robot.magazineBackward();
+    }
 
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
