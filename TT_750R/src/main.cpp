@@ -93,7 +93,7 @@ void usercontrol( void ) {
       //Button subject to change
       robot.magazineForward();
     }
-    else if(primary.ButtonY.pressing())
+    else if(primary.ButtonX.pressing())
     {
       //Button subject to change
       robot.magazineBackward();
