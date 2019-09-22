@@ -67,12 +67,12 @@ void Robot::driveFor(double distance, double velocity) {
 
 void::Robot::magazineForward()
 {
-  vex::motor m = vex::motor(MAGAZINE,false);
+  vex::motor m = vex::motor(MAGAZINE_MOTOR,false);
   m.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
   
 }
 void::Robot::magazineBackward()
 {
-  vex::motor m = vex::motor(MAGAZINE,false);
+  vex::motor m = vex::motor(MAGAZINE_MOTOR,false);
   m.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
 }
