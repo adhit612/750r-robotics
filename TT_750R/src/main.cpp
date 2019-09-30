@@ -51,6 +51,8 @@ void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
+  robot.driveFor(100, 50);
+  robot.intake(-1);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -74,8 +76,10 @@ void usercontrol( void ) {
     // Insert user code here. This is where you use the joystick values to 
     // update your motors, etc.
     // ........................................................................
-    robot.drive(primary.Axis2.position());
-    
+    if(primary.Axis2.position()>10)
+      robot.driveForward(primary.Axis2.position());
+    if(primary.Axis2.position()<10)
+      robot.driveBackward(primary.Axis2.position());
     if(primary.Axis1.position()>50)
       robot.strafe(-1);
     else if (primary.Axis1.position()<-50)
@@ -89,16 +93,18 @@ void usercontrol( void ) {
       robot.turnLeft();
     
     if(primary.ButtonY.pressing())
-    {
-      //Button subject to change
-      robot.magazineForward();
-    }
+      robot.moveMagazine(1);
     else if(primary.ButtonX.pressing())
-    {
-      //Button subject to change
-      robot.magazineBackward();
-    }
+      robot.moveMagazine(-1);
+    else
+      robot.moveMagazine(0);
 
+    if(primary.ButtonA.pressing())
+      robot.intake(1);
+    else if(primary.ButtonB.pressing())
+      robot.intake(-1);
+    else
+      robot.intake(0);
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
