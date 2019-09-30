@@ -8,13 +8,23 @@ Robot::Robot(vex::brain cortex) : cortex(cortex), driveMotors() {
 	driveMotors.push_back(vex::motor(D_MOTOR_R, true));
 }
 
-void Robot::drive(int value) {
+void Robot::driveForward(int value) {
 	for(int i = 0; i < driveMotors.size(); i++) {
 		vex::motor m = driveMotors.at(i);
-    if(value==0)
-      m.setBrake(vex::brake);
-    else
-		  m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+    if(i==0) //LEFT
+		  m.spin(vex::directionType::fwd, value/1.09, vex::percentUnits::pct);
+    else if(i==1)
+      m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+	}
+}
+
+void Robot::driveBackward(int value) {
+	for(int i = 0; i < driveMotors.size(); i++) {
+		vex::motor m = driveMotors.at(i);
+    if(i==0) //LEFT
+		  m.spin(vex::directionType::fwd, value/1.1, vex::percentUnits::pct);
+    else if(i==1)
+      m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
 	}
 }
 
@@ -68,30 +78,16 @@ void Robot::driveFor(double distance, double velocity) {
   }
 }
 
-void Robot::magazineForward()
+void Robot::moveMagazine(int mode)
 {
   vex::motor m = vex::motor(MAGAZINE_MOTOR);
-  m.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
-  
-}
-void Robot::magazineBackward()
-{
-  vex::motor m = vex::motor(MAGAZINE_MOTOR);
-  m.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
+  m.spin(vex::directionType::fwd,50*mode,vex::percentUnits::pct);
 }
 
-void Robot::rollOut()
+void Robot::intake(int mode)
 {
-  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR,false);
-  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR);
-  m.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
-  m2.spin(vex::directionType::fwd,100,vex::percentUnits::pct);
-}
-
-void Robot::rollIn()
-{
-  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR,false);
-  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR);
-  m.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
-  m2.spin(vex::directionType::fwd,-100,vex::percentUnits::pct);
+  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR);
+  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR, false);
+  m.spin(vex::directionType::fwd,100*mode,vex::percentUnits::pct);
+  m2.spin(vex::directionType::fwd,-100*mode,vex::percentUnits::pct);
 }
