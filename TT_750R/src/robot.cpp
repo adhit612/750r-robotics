@@ -70,14 +70,6 @@ void Robot::liftDown(int value)
   m2.spin(vex::directionType::fwd, -100, vex::percentUnits::pct);
 }
 
-void Robot::driveFor(double distance, double velocity) {
-  for(int i=0; i<driveMotors.size(); i++)
-  {
-    vex::motor m = driveMotors.at(i);
-    driveMotors.at(i).rotateFor(vex::directionType::fwd, distance, vex::rotationUnits::deg, velocity, vex::velocityUnits::pct);
-  }
-}
-
 void Robot::moveMagazine(int mode)
 {
   vex::motor m = vex::motor(MAGAZINE_MOTOR);
@@ -91,3 +83,42 @@ void Robot::intake(int mode)
   m.spin(vex::directionType::fwd,100*mode,vex::percentUnits::pct);
   m2.spin(vex::directionType::fwd,-100*mode,vex::percentUnits::pct);
 }
+
+void Robot::driveFor(double distance, double velocity) {
+  for(int i=0; i<driveMotors.size(); i++)
+  {
+    vex::motor m = driveMotors.at(i);
+    m.rotateFor(vex::directionType::fwd, distance, vex::rotationUnits::deg, velocity, vex::velocityUnits::pct);
+  }
+}
+
+void Robot::turnFor(double angle) { //POSITIVE VALUE = TURN LEFT
+  for(int i=0; i<driveMotors.size(); i++)
+  {
+    vex::motor m = driveMotors.at(i);
+    if(i%2==0)
+      m.rotateFor(vex::directionType::fwd, -angle, vex::rotationUnits::deg);
+    else 
+      m.rotateFor(vex::directionType::fwd, angle, vex::rotationUnits::deg);
+  }
+}
+
+void Robot::intakeFor(int mode)
+{
+  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR);
+  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR, false);
+  m.rotateFor(vex::directionType::fwd, 500*mode, vex::rotationUnits::deg);
+  m2.rotateFor(vex::directionType::fwd, 500*mode, vex::rotationUnits::deg);
+}
+
+void Robot::magazineFor(int mode)
+{
+  vex::motor m = vex::motor(MAGAZINE_MOTOR);
+  m.rotateFor(vex::directionType::fwd, 50*mode, vex::rotationUnits::deg);
+}
+
+/*void Robot::intakeAndMove(double distance, double velocity,int mode)
+{
+  intake(1);
+  driveFor(distance, velocity);
+}*/
