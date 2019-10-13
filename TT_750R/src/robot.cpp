@@ -85,40 +85,34 @@ void Robot::intake(int mode)
 }
 
 void Robot::driveFor(double distance, double velocity) {
-  for(int i=0; i<driveMotors.size(); i++)
-  {
-    vex::motor m = driveMotors.at(i);
-    m.rotateFor(vex::directionType::fwd, distance, vex::rotationUnits::deg, velocity, vex::velocityUnits::pct);
-  }
+  driveMotors.at(0).rotateFor(vex::directionType::fwd, distance, vex::rotationUnits::deg, velocity, vex::velocityUnits::pct, false);
+  driveMotors.at(1).rotateFor(vex::directionType::fwd, distance, vex::rotationUnits::deg, velocity, vex::velocityUnits::pct, true);
 }
 
 void Robot::turnFor(double angle) { //POSITIVE VALUE = TURN LEFT
   for(int i=0; i<driveMotors.size(); i++)
   {
-    vex::motor m = driveMotors.at(i);
-    if(i%2==0)
-      m.rotateFor(vex::directionType::fwd, -angle, vex::rotationUnits::deg);
-    else 
-      m.rotateFor(vex::directionType::fwd, angle, vex::rotationUnits::deg);
+    driveMotors.at(0).rotateFor(vex::directionType::fwd, -angle, vex::rotationUnits::deg, false);
+    driveMotors.at(1).rotateFor(vex::directionType::fwd, angle, vex::rotationUnits::deg, true);
   }
 }
 
-void Robot::intakeFor(int mode)
+void Robot::intakeFor(int distance, int mode)
 {
   vex::motor m = vex::motor(LEFT_ROLLER_MOTOR);
   vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR, false);
-  m.rotateFor(vex::directionType::fwd, 500*mode, vex::rotationUnits::deg);
-  m2.rotateFor(vex::directionType::fwd, 500*mode, vex::rotationUnits::deg);
+  m.rotateFor(vex::directionType::fwd, distance*mode, vex::rotationUnits::deg, false);
+  m2.rotateFor(vex::directionType::fwd, distance*mode, vex::rotationUnits::deg, true);
 }
 
 void Robot::magazineFor(int mode)
 {
   vex::motor m = vex::motor(MAGAZINE_MOTOR);
-  m.rotateFor(vex::directionType::fwd, 50*mode, vex::rotationUnits::deg);
+  m.rotateFor(vex::directionType::fwd, 50*mode, vex::rotationUnits::deg, true);
 }
 
-/*void Robot::intakeAndMove(double distance, double velocity,int mode)
+void Robot::intakeAndMove(double distance, double velocity,int mode)
 {
-  intake(1);
+  intake(mode);
   driveFor(distance, velocity);
-}*/
+}
