@@ -18,10 +18,12 @@ class Robot {
     void strafe(int mode);
     void liftUp(int value);
     void liftDown(int value);
-    void clawOpen();
-    void clawClose();
     void driveFor(double distance, double velocity);
+    void turnFor(double angle);
     void moveMagazine(int mode);
     void intake(int mode);
+    void intakeFor(int mode);
+    void magazineFor(int mode);
+    void intakeAndMove(double distance, double velocity,int time, int mode);
 };
 #endif
