@@ -17,7 +17,7 @@ vex::brain       Brain;
 vex::competition Competition;
 
 // define your global instances of motors and other devices here
-vex::controller  primary    (vex::controllerType::primary);
+vex::controller  controller1    (vex::controllerType::primary);
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -50,7 +50,19 @@ void pre_auton( void ) {
 void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
-  // ..........................................................................
+  // ..........................................................................  
+  int fullTile=600;
+  int fullCircle=1200;
+
+  robot.intake(-1);
+  robot.driveFor(fullTile*-1, 50);
+
+  /*robot.intakeAndMove(fullTile*2, 100, 5, 1);
+  robot.driveFor(fullTile*-2, 100);//drive back
+  robot.turnFor(fullCircle*.25);//turn left
+  robot.driveFor(fullTile, 100);//drive forward
+  robot.magazineFor(1);// move magazine up
+  robot.intakeAndMove(fullTile*-2, 100, 5, -1);*/
 }
 
 /*---------------------------------------------------------------------------*/
@@ -74,32 +86,33 @@ void usercontrol( void ) {
     // Insert user code here. This is where you use the joystick values to 
     // update your motors, etc.
     // ........................................................................
-    if(primary.Axis2.position()>10)
-      robot.driveForward(primary.Axis2.position());
-    if(primary.Axis2.position()<10)
-      robot.driveBackward(primary.Axis2.position());
-    if(primary.Axis1.position()>50)
+    if(controller1.Axis2.position()>10)
+      robot.driveForward(controller1.Axis2.position());
+    if(controller1.Axis2.position()<10)
+      robot.driveBackward(controller1.Axis2.position());
+
+    if(controller1.Axis1.position()>10)
       robot.strafe(-1);
-    else if (primary.Axis1.position()<-50)
+    else if (controller1.Axis1.position()<-10)
       robot.strafe(1);
     else
       robot.strafe(0);
-
-    if(primary.ButtonR1.pressing())
+      
+    if(controller1.ButtonR1.pressing())
       robot.turnRight();
-    else if(primary.ButtonR2.pressing())
+    else if(controller1.ButtonL1.pressing())
       robot.turnLeft();
     
-    if(primary.ButtonY.pressing())
+    if(controller1.ButtonDown.pressing())
       robot.moveMagazine(1);
-    else if(primary.ButtonX.pressing())
+    else if(controller1.ButtonUp.pressing())
       robot.moveMagazine(-1);
     else
       robot.moveMagazine(0);
 
-    if(primary.ButtonA.pressing())
+    if(controller1.ButtonA.pressing())
       robot.intake(1);
-    else if(primary.ButtonB.pressing())
+    else if(controller1.ButtonB.pressing())
       robot.intake(-1);
     else
       robot.intake(0);
