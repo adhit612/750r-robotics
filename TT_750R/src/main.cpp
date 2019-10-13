@@ -54,7 +54,7 @@ void autonomous( void ) {
   int fullTile=600;
   int fullCircle=1200;
 
-  robot.intake(-1);
+  robot.intakeFor(500, -1);
   robot.driveFor(fullTile*-1, 50);
 
   /*robot.intakeAndMove(fullTile*2, 100, 5, 1);
