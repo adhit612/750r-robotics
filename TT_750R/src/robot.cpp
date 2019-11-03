@@ -8,21 +8,11 @@ Robot::Robot(vex::brain cortex) : cortex(cortex), driveMotors() {
 	driveMotors.push_back(vex::motor(D_MOTOR_R, true));
 }
 
-void Robot::driveForward(int value) {
+void Robot::drive(int value) {
 	for(int i = 0; i < driveMotors.size(); i++) {
 		vex::motor m = driveMotors.at(i);
     if(i==0) //LEFT
-		  m.spin(vex::directionType::fwd, value/1.09, vex::percentUnits::pct);
-    else if(i==1)
-      m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
-	}
-}
-
-void Robot::driveBackward(int value) {
-	for(int i = 0; i < driveMotors.size(); i++) {
-		vex::motor m = driveMotors.at(i);
-    if(i==0) //LEFT
-		  m.spin(vex::directionType::fwd, value/1.1, vex::percentUnits::pct);
+		  m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
     else if(i==1)
       m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
 	}
