@@ -11,8 +11,7 @@ class Robot {
 	public:
 		Robot(vex::brain cortex);
 		
-		void driveForward(int value);
-    void driveBackward(int value);
+		void drive(int value);
     void turnRight();
     void turnLeft();
     void strafe(int mode);
