@@ -1,11 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*    Module:       main.cpp                                                  */
-/*    Author:       C:\Users\Nitin                                            */
-/*    Created:      Sun Jul 14 2019                                           */
-/*    Description:  V5 project                                                */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #include "vex.h"
 #include "config.h"
 #include "robot.h"
@@ -86,10 +78,7 @@ void usercontrol( void ) {
     // Insert user code here. This is where you use the joystick values to 
     // update your motors, etc.
     // ........................................................................
-    if(controller1.Axis2.position()>10)
-      robot.driveForward(controller1.Axis2.position());
-    if(controller1.Axis2.position()<10)
-      robot.driveBackward(controller1.Axis2.position());
+    robot.drive(controller1.Axis2.position());
 
     if(controller1.Axis1.position()>10)
       robot.strafe(-1);
