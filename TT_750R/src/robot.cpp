@@ -13,8 +13,8 @@ void Robot::drive(int value) {
 		vex::motor m = driveMotors.at(i);
     if(i==0) //LEFT
 		  m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
-    else if(i==1)
-      m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
+    else if(i==1) //RIGHT
+      m.spin(vex::directionType::fwd, value/1.15, vex::percentUnits::pct);
 	}
 }
 
@@ -22,9 +22,9 @@ void Robot::turnRight() {
 	for(int i = 0; i < driveMotors.size(); i++) {
 		vex::motor m = driveMotors.at(i);
     if(i%2==0) 
-			m.spin(vex::directionType::fwd, 50, vex::percentUnits::pct); //LEFT SIDE
+			m.spin(vex::directionType::fwd, 25, vex::percentUnits::pct); //LEFT SIDE
     else
-      m.spin(vex::directionType::rev, 50, vex::percentUnits::pct); //RIGHT SIDE
+      m.spin(vex::directionType::rev, 25, vex::percentUnits::pct); //RIGHT SIDE
 	}
 }
 
@@ -32,9 +32,9 @@ void Robot::turnLeft() {
 	for(int i = 0; i < driveMotors.size(); i++) {
 		vex::motor m = driveMotors.at(i);
     if(i%2==0)
-			m.spin(vex::directionType::rev, 50, vex::percentUnits::pct); //LEFT SIDE
+			m.spin(vex::directionType::rev, 25, vex::percentUnits::pct); //LEFT SIDE
     else
-      m.spin(vex::directionType::fwd, 50, vex::percentUnits::pct); //RIGHT SIDE
+      m.spin(vex::directionType::fwd, 25, vex::percentUnits::pct); //RIGHT SIDE
 	}
 }
 
@@ -44,26 +44,31 @@ void Robot::strafe(int mode)
 		m.spin(vex::directionType::fwd, 50*mode, vex::percentUnits::pct);
 }
 
-void Robot::liftUp(int value)
+void Robot::lift(int mode)
 {
   vex::motor m = vex::motor (RIGHT_LIFT_MOTOR,false);
   vex::motor m2 = vex::motor (LEFT_LIFT_MOTOR, true);
-  m.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
-  m2.spin(vex::directionType::fwd, 100, vex::percentUnits::pct);
-}
+  m.spin(vex::directionType::fwd, 75*mode, vex::percentUnits::pct);
+  m2.spin(vex::directionType::fwd, 75*mode, vex::percentUnits::pct);
 
-void Robot::liftDown(int value)
-{
-  vex::motor m = vex::motor (RIGHT_LIFT_MOTOR,false);
-  vex::motor m2 = vex::motor (LEFT_LIFT_MOTOR, true);
-  m.spin(vex::directionType::fwd, -100, vex::percentUnits::pct);
-  m2.spin(vex::directionType::fwd, -100, vex::percentUnits::pct);
+  if(mode==0)
+  {
+    m.stop(vex::brakeType::hold);
+    m2.stop(vex::brakeType::hold);
+  }
 }
 
 void Robot::moveMagazine(int mode)
 {
   vex::motor m = vex::motor(MAGAZINE_MOTOR);
-  m.spin(vex::directionType::fwd,50*mode,vex::percentUnits::pct);
+  //controller1.Screen.print(m.rotation(vex::rotationUnits::deg));
+
+  m.spin(vex::directionType::fwd,25*mode,vex::percentUnits::pct);
+  //m.startRotateTo(100, vex::rotationUnits::deg);
+  if(mode==0)
+  {
+    m.stop(vex::brakeType::hold);
+  }
 }
 
 void Robot::intake(int mode)
