@@ -10,7 +10,6 @@ vex::competition Competition;
 
 // define your global instances of motors and other devices here
 vex::controller  controller1    (vex::controllerType::primary);
-
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -96,7 +95,7 @@ void usercontrol( void ) {
       robot.turnLeft();
     
     if(controller1.ButtonDown.pressing())
-      robot.moveMagazine(1);
+      robot.moveMagazine(1);//FORWARD
     else if(controller1.ButtonUp.pressing())
       robot.moveMagazine(-1);
     else
@@ -110,9 +109,20 @@ void usercontrol( void ) {
       robot.intake(0);
 
     if(controller1.ButtonRight.pressing())
-      robot.liftUp();
+    {
+      robot.lift(1);
+      robot.moveMagazine(1);
+    }
     else if(controller1.ButtonLeft.pressing())
-      robot.liftDown();
+    {
+      robot.lift(-1);
+      robot.moveMagazine(-1);
+    }
+    else
+    {
+      robot.lift(0);
+      robot.moveMagazine(0);
+    }
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
