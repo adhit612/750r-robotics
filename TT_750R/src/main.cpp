@@ -77,10 +77,7 @@ void usercontrol( void ) {
     // Insert user code here. This is where you use the joystick values to 
     // update your motors, etc.
     // ........................................................................
-    if(controller1.Axis2.position()!=0)
-      robot.drive(controller1.Axis2.position());
-    else
-      robot.drive(0);
+    robot.drive(controller1.Axis2.position());
 
     if(controller1.Axis1.position()>10)
       robot.strafe(-1);
@@ -94,12 +91,17 @@ void usercontrol( void ) {
     else if(controller1.ButtonL1.pressing())
       robot.turnLeft();
     
-    if(controller1.ButtonDown.pressing())
-      robot.moveMagazine(1);//FORWARD
-    else if(controller1.ButtonUp.pressing())
+    if(controller1.ButtonUp.pressing())
+    {
+      robot.moveMagazine(1);
+    }
+    else if(controller1.ButtonDown.pressing())
+    {
       robot.moveMagazine(-1);
-    else
+    }
+    else {
       robot.moveMagazine(0);
+    }
 
     if(controller1.ButtonA.pressing())
       robot.intake(1);
@@ -121,8 +123,8 @@ void usercontrol( void ) {
     else
     {
       robot.lift(0);
-      robot.moveMagazine(0);
     }
+
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
