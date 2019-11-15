@@ -15,7 +15,7 @@ class Robot {
     void turnRight();
     void turnLeft();
     void strafe(int mode);
-    void lift();
+    void lift(int mode);
     void driveFor(double distance, double velocity);
     void turnFor(double angle);
     void moveMagazine(int mode);
