@@ -61,10 +61,7 @@ void Robot::lift(int mode)
 void Robot::moveMagazine(int mode)
 {
   vex::motor m = vex::motor(MAGAZINE_MOTOR);
-  //controller1.Screen.print(m.rotation(vex::rotationUnits::deg));
-
-  m.spin(vex::directionType::fwd,25*mode,vex::percentUnits::pct);
-  //m.startRotateTo(100, vex::rotationUnits::deg);
+  m.spin(vex::directionType::fwd,20*mode,vex::percentUnits::pct);
   if(mode==0)
   {
     m.stop(vex::brakeType::hold);
@@ -73,10 +70,10 @@ void Robot::moveMagazine(int mode)
 
 void Robot::intake(int mode)
 {
-  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR);
-  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR, false);
+  vex::motor m = vex::motor(LEFT_ROLLER_MOTOR, false);
+  vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR, true);
   m.spin(vex::directionType::fwd,100*mode,vex::percentUnits::pct);
-  m2.spin(vex::directionType::fwd,-100*mode,vex::percentUnits::pct);
+  m2.spin(vex::directionType::fwd,100*mode,vex::percentUnits::pct);
 }
 
 void Robot::driveFor(double distance, double velocity) {
