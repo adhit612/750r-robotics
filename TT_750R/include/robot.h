@@ -18,9 +18,9 @@ class Robot {
     void lift(int mode);
     void driveFor(double distance, double velocity);
     void turnFor(double angle);
-    void moveMagazine(int mode);
+    void moveMagazine(double mode);
     void intake(int mode);
-    void intakeFor(int distance, int mode);
+    void intakeFor(double distance, int mode);
     void magazineFor(int mode);
     void intakeAndMove(double distance, double velocity,int mode);
 };
