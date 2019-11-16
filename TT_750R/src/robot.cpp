@@ -58,10 +58,10 @@ void Robot::lift(int mode)
   }
 }
 
-void Robot::moveMagazine(int mode)
+void Robot::moveMagazine(double mode)
 {
   vex::motor m = vex::motor(MAGAZINE_MOTOR);
-  m.spin(vex::directionType::fwd,20*mode,vex::percentUnits::pct);
+  m.spin(vex::directionType::fwd,50*mode,vex::percentUnits::pct);
   if(mode==0)
   {
     m.stop(vex::brakeType::hold);
@@ -89,7 +89,7 @@ void Robot::turnFor(double angle) { //POSITIVE VALUE = TURN LEFT
   }
 }
 
-void Robot::intakeFor(int distance, int mode)
+void Robot::intakeFor(double distance, int mode)
 {
   vex::motor m = vex::motor(LEFT_ROLLER_MOTOR);
   vex::motor m2 = vex::motor(RIGHT_ROLLER_MOTOR, false);
@@ -105,6 +105,6 @@ void Robot::magazineFor(int mode)
 
 void Robot::intakeAndMove(double distance, double velocity,int mode)
 {
-  intake(mode);
+  intakeFor(distance, mode);
   driveFor(distance, velocity);
 }
