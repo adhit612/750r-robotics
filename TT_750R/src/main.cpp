@@ -45,11 +45,13 @@ void autonomous( void ) {
   int fullTile=600;
   int fullCircle=1200;
 
+
   robot.intakeAndMove(fullTile*3, 100, 1);
   robot.driveFor(fullTile*-3, 100);
   robot.turnFor(.25*fullCircle);
   robot.driveFor(2*fullTile, 100);
   robot.magazineFor(1);
+  robot.intakeAndMove(fullTile*-1, 100, -1);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -73,11 +75,11 @@ void usercontrol( void ) {
     // Insert user code here. This is where you use the joystick values to 
     // update your motors, etc.
     // ........................................................................
-    robot.drive(controller1.Axis2.value());
+    robot.drive(controller1.Axis2.position());
 
     if(controller1.Axis1.position()>10)
       robot.strafe(-1);
-    else if (controller1.Axis1.value()<-10)
+    else if (controller1.Axis1.position()<-10)
       robot.strafe(1);
     else
       robot.strafe(0);
@@ -109,12 +111,12 @@ void usercontrol( void ) {
     if(controller1.ButtonRight.pressing())
     {
       robot.lift(1);
-      robot.moveMagazine(.5);
+      //robot.moveMagazine(.5);
     }
     else if(controller1.ButtonLeft.pressing())
     {
       robot.lift(-1);
-      robot.moveMagazine(-.5);
+      //robot.moveMagazine(-.5);
     }
     else
     {
