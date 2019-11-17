@@ -14,7 +14,7 @@ void Robot::drive(int value) {
     if(i==0) //LEFT
 		  m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
     else if(i==1) //RIGHT
-      m.spin(vex::directionType::fwd, value/1.15, vex::percentUnits::pct);
+      m.spin(vex::directionType::fwd, value, vex::percentUnits::pct);
 	}
 }
 
