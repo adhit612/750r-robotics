@@ -10,6 +10,16 @@ vex::competition Competition;
 
 // define your global instances of motors and other devices here
 vex::controller  controller1    (vex::controllerType::primary);
+
+void liftTo()
+{
+  vex::motor m = vex::motor (RIGHT_LIFT_MOTOR,false);
+  vex::motor m2 = vex::motor (LEFT_LIFT_MOTOR, true);
+  vex::motor m3 = vex::motor (MAGAZINE_MOTOR);
+  //m.rotateFor(vex::directionType::fwd, 1000, vex::rotationUnits::deg, 75, vex::velocityUnits::pct, false);
+  //m2.rotateFor(vex::directionType::fwd, 1000, vex::rotationUnits::deg, 75, vex::velocityUnits::pct, false);
+  m3.rotateFor(vex::directionType::fwd, 1000, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, true);
+}
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -43,10 +53,9 @@ void autonomous( void ) {
   // Insert autonomous user code here.
   // ..........................................................................  
   int fullTile=600;
-  int fullCircle=1200;
-
-
-  robot.intakeAndMove(fullTile*3, 100, 1);
+  int fullCircle=590;
+  
+  robot.intakeAndMove(fullTile, 100, 1);
   robot.driveFor(fullTile*-3, 100);
   robot.turnFor(.25*fullCircle);
   robot.driveFor(2*fullTile, 100);
@@ -75,17 +84,19 @@ void usercontrol( void ) {
     // Insert user code here. This is where you use the joystick values to 
     // update your motors, etc.
     // ........................................................................
-    robot.drive(controller1.Axis2.position());
+    robot.drive(controller1.Axis2.value());
 
-    if(controller1.Axis1.position()>10)
-      robot.strafe(-1);
-    else if (controller1.Axis1.position()<-10)
+    if(controller1.Axis1.value()>10)
       robot.strafe(1);
+    else if (controller1.Axis1.value()<-10)
+      robot.strafe(-1);
     else
       robot.strafe(0);
       
     if(controller1.ButtonR1.pressing())
+    {
       robot.turnRight();
+    }
     else if(controller1.ButtonL1.pressing())
       robot.turnLeft();
     
@@ -122,7 +133,6 @@ void usercontrol( void ) {
     {
       robot.lift(0);
     }
-
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
