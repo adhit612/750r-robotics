@@ -13,12 +13,7 @@ vex::controller  controller1    (vex::controllerType::primary);
 
 void liftTo()
 {
-  vex::motor m = vex::motor (RIGHT_LIFT_MOTOR,false);
-  vex::motor m2 = vex::motor (LEFT_LIFT_MOTOR, true);
-  vex::motor m3 = vex::motor (MAGAZINE_MOTOR);
-  //m.rotateFor(vex::directionType::fwd, 1000, vex::rotationUnits::deg, 75, vex::velocityUnits::pct, false);
-  //m2.rotateFor(vex::directionType::fwd, 1000, vex::rotationUnits::deg, 75, vex::velocityUnits::pct, false);
-  m3.rotateFor(vex::directionType::fwd, 1000, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, true);
+  
 }
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -100,11 +95,11 @@ void usercontrol( void ) {
     else if(controller1.ButtonL1.pressing())
       robot.turnLeft();
     
-    if(controller1.ButtonUp.pressing())
+    if(controller1.ButtonX.pressing())
     {
       robot.moveMagazine(1);
     }
-    else if(controller1.ButtonDown.pressing())
+    else if(controller1.ButtonB.pressing())
     {
       robot.moveMagazine(-1);
     }
@@ -112,27 +107,29 @@ void usercontrol( void ) {
       robot.moveMagazine(0);
     }
 
-    if(controller1.ButtonA.pressing())
+    if(controller1.ButtonRight.pressing())
       robot.intake(1);
-    else if(controller1.ButtonB.pressing())
+    else if(controller1.ButtonDown.pressing())
       robot.intake(-1);
     else
       robot.intake(0);
-
-    if(controller1.ButtonRight.pressing())
+    
+  
+    if(controller1.ButtonA.pressing())
     {
-      robot.lift(1);
-      //robot.moveMagazine(.5);
+        robot.lift(1);
+        robot.moveMagazine(1);
     }
-    else if(controller1.ButtonLeft.pressing())
+    else if(controller1.ButtonY.pressing())
     {
       robot.lift(-1);
-      //robot.moveMagazine(-.5);
+      robot.moveMagazine(-1);
     }
     else
     {
       robot.lift(0);
     }
+    
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
   }
 }
@@ -141,6 +138,11 @@ void usercontrol( void ) {
 // Main will set up the competition functions and callbacks.
 //
 int main() {
+
+    if(controller1.ButtonR2.pressing())
+    {
+      controller1.ButtonRight.pressed(liftTo);
+    }
     //Set up callbacks for autonomous and driver control periods.
     Competition.autonomous( autonomous );
     Competition.drivercontrol( usercontrol );
