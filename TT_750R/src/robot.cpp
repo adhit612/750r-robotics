@@ -48,13 +48,15 @@ void Robot::lift(int mode)
 {
   vex::motor m = vex::motor (RIGHT_LIFT_MOTOR,false);
   vex::motor m2 = vex::motor (LEFT_LIFT_MOTOR, true);
-  m.spin(vex::directionType::fwd, 75*mode, vex::percentUnits::pct);
-  m2.spin(vex::directionType::fwd, 75*mode, vex::percentUnits::pct);
-
   if(mode==0)
   {
     m.stop(vex::brakeType::hold);
     m2.stop(vex::brakeType::hold);
+  }
+  else
+  {
+    m.spin(vex::directionType::fwd, 75*mode, vex::percentUnits::pct);
+    m2.spin(vex::directionType::fwd, 75*mode, vex::percentUnits::pct);
   }
 }
 
