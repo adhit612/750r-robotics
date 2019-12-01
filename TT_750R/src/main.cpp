@@ -47,15 +47,39 @@ void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................  
-  int fullTile=600;
-  int fullCircle=590;
-  
-  robot.intakeAndMove(fullTile, 100, 1);
-  robot.driveFor(fullTile*-3, 100);
-  robot.turnFor(.25*fullCircle);
-  robot.driveFor(2*fullTile, 100);
-  robot.magazineFor(1);
-  robot.intakeAndMove(fullTile*-1, 100, -1);
+  int fullTile=550;
+  int fullCircle=515;
+  bool redSide=false;
+  bool blueSide=true;
+
+  if(blueSide){
+    robot.deploy();
+    vex::task::sleep(100);
+    robot.intakeAndMove(fullTile*2.6, 50, 1);
+    robot.driveFor(fullTile*-1.5, 50);
+    robot.turnFor(.36*fullCircle);
+    robot.driveFor(fullTile*1, 50);
+    robot.driveFor(fullTile*-.15, 50);
+    robot.magazineFor(1700, 1);
+    robot.driveFor(fullTile*.1, 50);
+    vex::task::sleep(200);
+    robot.magazineBack();
+    robot.intakeAndMove(fullTile*-1, 50, -1);
+  }
+
+  if(redSide)
+  {
+    robot.intakeAndMove(fullTile*2.6, 50, 1);
+    robot.driveFor(fullTile*-1.5, 50);
+    robot.turnFor(-.36*fullCircle);
+    robot.driveFor(fullTile*.8, 50);
+    robot.driveFor(fullTile*-.15, 50);
+    robot.magazineFor(1700, 1);
+    robot.driveFor(fullTile*.1, 50);
+    vex::task::sleep(200);
+    robot.magazineBack();
+    robot.intakeAndMove(fullTile*-1, 50, -1);
+  }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -118,12 +142,12 @@ void usercontrol( void ) {
     if(controller1.ButtonA.pressing())
     {
         robot.lift(1);
-        robot.moveMagazine(1);
+        robot.moveMagazine(.75);
     }
     else if(controller1.ButtonY.pressing())
     {
       robot.lift(-1);
-      robot.moveMagazine(-1);
+      robot.moveMagazine(-.75);
     }
     else
     {
