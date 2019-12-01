@@ -7,5 +7,5 @@
 #define RIGHT_LIFT_MOTOR   vex::PORT9
 #define LEFT_LIFT_MOTOR    vex::PORT2
 #define MAGAZINE_MOTOR     vex::PORT12
-#define LEFT_ROLLER_MOTOR  vex::PORT3
+#define LEFT_ROLLER_MOTOR  vex::PORT5
 #define RIGHT_ROLLER_MOTOR vex::PORT8  
