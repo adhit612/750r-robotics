@@ -21,7 +21,10 @@ class Robot {
     void moveMagazine(double mode);
     void intake(int mode);
     void intakeFor(double distance, int mode);
-    void magazineFor(int mode);
+    void magazineFor(int distance, int mode);
     void intakeAndMove(double distance, double velocity,int mode);
+    void liftTo(int mode);
+    void deploy();
+    void magazineBack();
 };
 #endif
