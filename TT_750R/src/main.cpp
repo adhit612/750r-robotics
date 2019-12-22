@@ -33,6 +33,74 @@ void pre_auton( void ) {
   
 }
 
+void turnEncoderPID(double angle)
+{
+ vex::motor m = vex::motor(D_MOTOR_L);
+ vex::motor m2 = vex::motor(D_MOTOR_R);
+ 
+ double newMValue;
+ double newM2Value;
+ 
+ if(m.value() < 0)
+ {
+   newMValue = m.value() * -1;
+ }
+ else
+ {
+   newMValue = m.value();
+ }
+  if(m2.value() < 0)
+ {
+   newM2Value = m2.value() * -1;
+ }
+ else
+ {
+   newM2Value = m2.value();
+ }
+ 
+double average = (newM2Value + newMValue) / 2.0;
+ 
+const double ENDPOINT = (average + angle);
+ 
+double currentValue = average;
+double currentError = ENDPOINT - currentValue;
+ 
+while(fabs(currentError) > 2.5){
+controller1.Screen.setCursor(1, 1);
+controller1.Screen.print(currentError);
+ 
+double kP = 0.1;
+ 
+currentError = ENDPOINT - currentValue;
+ 
+double p = kP * currentError;
+ 
+m.spin(directionType::fwd, p, velocityUnits::pct);
+m2.spin(directionType::rev, p, velocityUnits::pct);
+ 
+if(m.value() < 0)
+ {
+   newMValue = m.value() * -1;
+ }
+ else
+ {
+   newMValue = m.value();
+ }
+  if(m2.value() < 0)
+ {
+   newM2Value = m2.value() * -1;
+ }
+ else
+ {
+   newM2Value = m2.value();
+ }
+ 
+currentValue = (m.value() + m2.value()) / 2.0;
+ 
+task::sleep(20);
+}
+}
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              Autonomous Task                              */
