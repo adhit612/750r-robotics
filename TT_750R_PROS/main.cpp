@@ -44,7 +44,7 @@ auto drive = ChassisControllerBuilder()
 .withDimensions(AbstractMotor::gearset::green, {{4_in, 12_in}, imev5GreenTPR})
 .build();
 
-auto tilterAuto = asyncPosControllerBuilder()
+auto tilterAuto = AsyncPosControllerBuilder()
 .withMotor(tilter)
 .withMaxVelocity(50)
 .build();
