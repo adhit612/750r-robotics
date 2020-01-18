@@ -1,6 +1,6 @@
 #include "main.h"
 
-//MOTOR PORTS 4
+//MOTOR PORTS 4 10
 int DRIVE_MOTOR_FL = 12;
 int DRIVE_MOTOR_FR = -19;
 int DRIVE_MOTOR_BL = 11;
@@ -8,13 +8,17 @@ int DRIVE_MOTOR_BR = -20;
 int TILTER = 1;
 int LIFT = -9;
 int LEFT_ROLLER = 6;
-int RIGHT_ROLLER = -10;
+int RIGHT_ROLLER = -8;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
 Motor lift(LIFT);
 Motor rollerL(LEFT_ROLLER);
 Motor rollerR(RIGHT_ROLLER);
+Motor driveFL(DRIVE_MOTOR_FL);
+Motor driveFR(DRIVE_MOTOR_FR);
+Motor driveBL(DRIVE_MOTOR_BL);
+Motor driveBR(DRIVE_MOTOR_BR);
 Potentiometer pot(1);
 
 Controller controller;
@@ -31,7 +35,7 @@ ControllerButton liftDown(ControllerDigital::Y);
 ControllerButton driveToggle(ControllerDigital::L1);
 
 ControllerButton right(ControllerDigital::right);
-ControllerButton left(ControllerDigital::left);
+ControllerButton stackButton(ControllerDigital::left);
 
 bool fastDrive=true;
 
@@ -40,16 +44,9 @@ auto drive = ChassisControllerBuilder()
 .withDimensions(AbstractMotor::gearset::green, {{4_in, 12_in}, imev5GreenTPR})
 .build();
 
-const double rollerkP = 0.001;
-const double rollerkI = 0.0001;
-
-auto rollerController = AsyncPosControllerBuilder()
-.withMotor(6)
-.withMotor(-10)
-.build();
-
-auto liftController = AsyncPosControllerBuilder()
-.withMotor(-9)
+auto tilterAuto = asyncPosControllerBuilder()
+.withMotor(tilter)
+.withMaxVelocity(50)
 .build();
 
 
@@ -71,8 +68,6 @@ void intakeControl(){
 	else{
 		rollerL.moveVelocity(0);
 		rollerR.moveVelocity(0);
-		rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
-		rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 	}
 }
 
@@ -82,16 +77,15 @@ void magazineControl(){
 		tilter.moveVelocity(50);
   }
 	else if(magazineBackward.isPressed()){
-		tilter.moveVelocity(-50);
+		tilter.moveVelocity(-100);
   }
 	else{
 		tilter.moveVelocity(0);
-		tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 	}
 }
 
 void liftControl(){
-	int target=3747;
+	/*int target=3747;
 	int error=pot.get()-target;
 	if(liftUp.isPressed()){
 		lift.moveVelocity(100);
@@ -99,7 +93,7 @@ void liftControl(){
 		/*while(error>10){
     	tilter.moveVelocity(30);}
 		while(error<-10){
-	    	tilter.moveVelocity(-30);}*/
+	    	tilter.moveVelocity(-30);}
 	}
 	else if(liftDown.isPressed()){
 		lift.moveVelocity(-100);
@@ -107,25 +101,31 @@ void liftControl(){
 		/*while(error>10){
     	tilter.moveVelocity(30);}
 		while(error<-10){
-	    	tilter.moveVelocity(-30);}*/
+	    	tilter.moveVelocity(-30);}
 	}
 	else{
 		lift.moveVelocity(0);
 		lift.setBrakeMode(AbstractMotor::brakeMode::hold);
-	}
+	}*/
 }
 
 void driveControl(){
 	if(driveToggle.isPressed())
-		fastDrive=false;
+    	drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY)/2,(controller.getAnalog(ControllerAnalog::rightX)/2));
+		else
+			drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
 }
 
 void stack(){
-
-}
-
-void stackAndBack(){
-
+		if(stackButton.isPressed())
+		{
+			tilterAuto->setTarget(961);
+			tilterAuto->waitUntilSettled();
+			rollers(-100);
+			drive->setMaxVelocity(45);
+			drive->moveDistance(-1_ft);
+			rollers(0);
+		}
 }
 
 /**
@@ -144,6 +144,14 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	driveBL.setBrakeMode(AbstractMotor::brakeMode::hold);
+	driveBR.setBrakeMode(AbstractMotor::brakeMode::hold);
+	driveFL.setBrakeMode(AbstractMotor::brakeMode::hold);
+	driveFR.setBrakeMode(AbstractMotor::brakeMode::hold);
+	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
+	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
+	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
+	tilter.tarePosition();
 }
 
 /**
@@ -280,26 +288,10 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
-		if(driveToggle.isPressed())
-    	drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY)/4,(controller.getAnalog(ControllerAnalog::rightX)/2));
-		else
-			drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
+		driveControl();
 		intakeControl();
 		magazineControl();
 		liftControl();
-
-		//if(right.isPressed()){
-		//	tilter.moveRelative(2500, 100);
-			//pros::delay(3000);}
-		if(left.isPressed()){
-			drive->setMaxVelocity(75);
-			lift.moveVelocity(-100);
-			tilter.moveRelative(2500, 100);
-			pros::delay(3000);
-			rollerR.moveRelative(-1000,125);
-			rollerL.moveRelative(-1000,125);
-			drive->moveDistance(-13_in);
-		}
 
 		pros::delay(20);
 	}
