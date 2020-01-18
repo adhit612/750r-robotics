@@ -207,8 +207,8 @@ void autonomous() {
 	drive->setMaxVelocity(75);
 	pros::delay(3000);
 	rollers(200);*/
-	rollers(-100);
-	pros::delay(1000);
+	rollers(-125);
+	pros::delay(1300);
 	rollers(200);
 	drive->setMaxVelocity(75);
 	drive->moveDistance(52_in);
@@ -222,7 +222,7 @@ void autonomous() {
 	drive->moveDistance(13.8_in);
 	drive->waitUntilSettled();
 	rollers(-70);
-	pros::delay(1000);
+	pros::delay(720);
 	rollers(0);
 	tilter.moveRelative(2200, 100);
 	pros::delay(3000);
