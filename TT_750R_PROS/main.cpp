@@ -225,7 +225,7 @@ void autonomous() {
 	pros::delay(720);
 	rollers(0);
 	tilter.moveRelative(2200, 100);
-	pros::delay(3000);
+	pros::delay(2000);
 	drive->moveDistance(3_in);
 	drive->waitUntilSettled();
 	rollers(-100);
