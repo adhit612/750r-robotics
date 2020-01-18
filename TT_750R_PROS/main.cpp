@@ -50,6 +50,8 @@ auto tilterAuto = AsyncPosControllerBuilder()
 .build();
 
 
+//double tilterTemperature = pros::tilter::get_temperature();
+//pros::Controller::set_text(tilterTemperature);
 
 void rollers(int speed){
 	rollerL.moveVelocity(speed);
@@ -90,7 +92,7 @@ void liftControl(){
 	if(liftUp.isPressed()){
 		lift.moveVelocity(100);
 		tilter.moveVelocity(30);
-		/*while(error>10){
+		while(error>10){
     	tilter.moveVelocity(30);}
 		while(error<-10){
 	    	tilter.moveVelocity(-30);}
@@ -98,7 +100,7 @@ void liftControl(){
 	else if(liftDown.isPressed()){
 		lift.moveVelocity(-100);
 		tilter.moveVelocity(-30);
-		/*while(error>10){
+		while(error>10){
     	tilter.moveVelocity(30);}
 		while(error<-10){
 	    	tilter.moveVelocity(-30);}
@@ -117,16 +119,19 @@ void driveControl(){
 }
 
 void stack(){
-		if(stackButton.isPressed())
-		{
-			tilterAuto->setTarget(961);
+			tilterAuto->setTarget(872);
 			tilterAuto->waitUntilSettled();
 			rollers(-100);
 			drive->setMaxVelocity(45);
 			drive->moveDistance(-1_ft);
 			drive->waitUntilSettled();
 			rollers(0);
-		}
+}
+
+void deploy()
+{
+	rollers(-100);
+	rollers(100);
 }
 
 /**
@@ -201,6 +206,8 @@ void autonomous() {
 	drive->setMaxVelocity(75);
 	pros::delay(3000);
 	rollers(200);*/
+	//deploy();
+	rollers(200);
 	drive->setMaxVelocity(75);
 	drive->moveDistance(52.5_in);
 	drive->waitUntilSettled();
@@ -212,6 +219,9 @@ void autonomous() {
 	drive->waitUntilSettled();
 	drive->moveDistance(13_in);
 	drive->waitUntilSettled();
+	rollers(-50);
+	pros::delay(1000);
+	rollers(0);
 	stack();
 	/*rollers(-70);
 	pros::delay(1000);
@@ -295,7 +305,8 @@ void opcontrol() {
 		intakeControl();
 		magazineControl();
 		liftControl();
-		stack();
+		if(stackButton.isPressed())
+			stack();
 
 		pros::delay(20);
 	}
