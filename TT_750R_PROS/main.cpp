@@ -124,6 +124,7 @@ void stack(){
 			rollers(-100);
 			drive->setMaxVelocity(45);
 			drive->moveDistance(-1_ft);
+			drive->waitUntilSettled();
 			rollers(0);
 		}
 }
@@ -199,7 +200,8 @@ void autonomous() {
 	/*rollers(-200);
 	drive->setMaxVelocity(75);
 	pros::delay(3000);
-	rollers(200);
+	rollers(200);*/
+	drive->setMaxVelocity(75);
 	drive->moveDistance(52.5_in);
 	drive->waitUntilSettled();
 	rollers(0);
@@ -210,7 +212,8 @@ void autonomous() {
 	drive->waitUntilSettled();
 	drive->moveDistance(13_in);
 	drive->waitUntilSettled();
-	rollers(-70);
+	stack();
+	/*rollers(-70);
 	pros::delay(1000);
 	rollers(0);
 	tilter.moveRelative(2000, 100);
@@ -246,7 +249,7 @@ void autonomous() {
 	rollers(0);*/
 
 	//FRONT AUTON
-	drive->setMaxVelocity(75);
+	/*drive->setMaxVelocity(75);
 	rollers(-200);
 	drive->moveDistance(6_in);
 	drive->waitUntilSettled();
@@ -257,7 +260,7 @@ void autonomous() {
 	drive->waitUntilSettled();
 	rollers(-200);
 	drive->moveDistance(-2_ft);
-	rollers(0);
+	rollers(0);*/
 
 	//FRONT AUTON ANTITIP
 	/*drive->setMaxVelocity(75);
@@ -292,6 +295,7 @@ void opcontrol() {
 		intakeControl();
 		magazineControl();
 		liftControl();
+		stack();
 
 		pros::delay(20);
 	}
