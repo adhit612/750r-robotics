@@ -193,17 +193,8 @@ void competition_initialize() {}
  //auto  liftTask = AsyncVelControllerBuilder::posPID()
 void autonomous() {
 
-  /*drive->moveDistance(2_ft);
-	rollerController->setTarget(100);
-	drive->waitUntilSettled();
-	//liftController->waitUntilSettled();
-	drive->turnAngle(-270_deg);
-	drive->moveDistance(1.5_ft);
-	liftController->setTarget(150);
-	drive->moveDistance(-1_ft);*/
-
 	//BACK BLUE AUTON
-	rollers(-125);
+	/*rollers(-125);
 	pros::delay(1000);
 	rollers(200);
 	drive->setMaxVelocity(75);
@@ -215,73 +206,48 @@ void autonomous() {
 	drive->setMaxVelocity(80);
 	drive->turnAngle(-100_deg);
 	drive->waitUntilSettled();
-	drive->moveDistance(13.2_in);
+	drive->moveDistance(13_in);
 	drive->waitUntilSettled();
 	rollers(-70);
 	pros::delay(720);
 	rollers(0);
 	tilter.moveRelative(2200, 100);
 	pros::delay(800);
-	drive->moveDistance(3.5_in);
+	drive->moveDistance(4_in);
+	drive->waitUntilSettled();
+	rollers(-125);
+	drive->moveDistance(-15_in);
+	drive->waitUntilSettled();
+	rollers(0);*/
+
+	//BACK RED AUTON
+	rollers(-125);
+	pros::delay(1000);
+	rollers(200);
+	drive->setMaxVelocity(75);
+	drive->moveDistance(52_in);
+	drive->waitUntilSettled();
+	rollers(0);
+	drive->moveDistance(-35_in);
+	drive->waitUntilSettled();
+	drive->setMaxVelocity(80);
+	drive->turnAngle(100_deg);
+	drive->waitUntilSettled();
+	drive->moveDistance(13_in);
+	drive->waitUntilSettled();
+	rollers(-70);
+	pros::delay(720);
+	rollers(0);
+	tilter.moveRelative(2200, 100);
+	pros::delay(800);
+	drive->moveDistance(4_in);
 	drive->waitUntilSettled();
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
 	rollers(0);
 
-	//stack();
-	/*rollers(-70);
-	pros::delay(1000);
-	rollers(0);
-	tilter.moveRelative(2000, 100);
-	pros::delay(3000);
-	rollers(-100);
-	drive->moveDistance(-13_in);
-	drive->waitUntilSettled();
-	rollers(0);*/
-
-	//BACK RED AUTON
-	/*rollers(-125);
-		pros::delay(1000);
-		rollers(200);
-		drive->setMaxVelocity(75);
-		drive->moveDistance(52_in);
-		drive->waitUntilSettled();
-		rollers(0);
-		drive->moveDistance(-35_in);
-		drive->waitUntilSettled();
-		drive->setMaxVelocity(80);
-		drive->turnAngle(100_deg);
-		drive->waitUntilSettled();
-		drive->moveDistance(13.2_in);
-		drive->waitUntilSettled();
-		rollers(-70);
-		pros::delay(720);
-		rollers(0);
-		tilter.moveRelative(2200, 100);
-		pros::delay(800);
-		drive->moveDistance(3.5_in);
-		drive->waitUntilSettled();
-		rollers(-125);
-		drive->moveDistance(-15_in);
-		drive->waitUntilSettled();
-		rollers(0);*/
-
-	//FRONT AUTON
-	/*drive->setMaxVelocity(75);
-	rollers(-200);
-	drive->moveDistance(6_in);
-	drive->waitUntilSettled();
-	drive->moveDistance(-7_in);
-	rollers(0);
-	drive->waitUntilSettled();
-	drive->moveDistance(1.5_ft);
-	drive->waitUntilSettled();
-	rollers(-200);
-	drive->moveDistance(-2_ft);
-	rollers(0);*/
-
-	//FRONT AUTON ANTITIP
+	//FRONT AUTON BLUE ANTITIP
 	/*drive->setMaxVelocity(75);
 	drive->moveDistance(10_in);
 	drive->waitUntilSettled();
@@ -293,7 +259,30 @@ void autonomous() {
 	pros::delay(1000);
 	rollers(0);
 	drive->moveDistance(-1_ft);*/
+
+	//FRONT AUTON RED ANTITIP
+	/*drive->setMaxVelocity(75);
+	drive->moveDistance(10_in);
+	drive->waitUntilSettled();
+	drive->turnAngle(-85_deg);
+	drive->waitUntilSettled();
+	drive->moveDistance(10_in);
+	drive->waitUntilSettled();
+	rollers(-200);
+	pros::delay(1000);
+	rollers(0);
+	drive->moveDistance(-1_ft);*/
+
+	//Programming Skills
+	/*rollers(-125);
+	pros::delay(1000);
+	rollers(200);
+	drive->setMaxVelocity(75);
+	drive->moveDistance(91_in);
+	drive->waitUntilSettled();
+	rollers(0);*/
 	}
+
 
 /**
  * Runs the operator control code. This function will be started in its own task
