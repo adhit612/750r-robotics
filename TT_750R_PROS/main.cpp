@@ -241,29 +241,31 @@ void autonomous() {
 	rollers(0);*/
 
 	//BACK RED AUTON
-	/*rollers(-200);
-	drive->setMaxVelocity(75);
-	pros::delay(3000);
-	rollers(200);
-	drive->moveDistance(52.5_in);
-	drive->waitUntilSettled();
-	rollers(0);
-	drive->moveDistance(-35_in);
-	drive->waitUntilSettled();
-	drive->setMaxVelocity(80);
-	drive->turnAngle(106_deg);
-	drive->waitUntilSettled();
-	drive->moveDistance(13_in);
-	drive->waitUntilSettled();
-	rollers(-70);
-	pros::delay(1000);
-	rollers(0);
-	tilter.moveRelative(2000, 100);
-	pros::delay(3000);
-	rollers(-100);
-	drive->moveDistance(-13_in);
-	drive->waitUntilSettled();
-	rollers(0);*/
+	/*rollers(-125);
+		pros::delay(1000);
+		rollers(200);
+		drive->setMaxVelocity(75);
+		drive->moveDistance(52_in);
+		drive->waitUntilSettled();
+		rollers(0);
+		drive->moveDistance(-35_in);
+		drive->waitUntilSettled();
+		drive->setMaxVelocity(80);
+		drive->turnAngle(100_deg);
+		drive->waitUntilSettled();
+		drive->moveDistance(13.2_in);
+		drive->waitUntilSettled();
+		rollers(-70);
+		pros::delay(720);
+		rollers(0);
+		tilter.moveRelative(2200, 100);
+		pros::delay(800);
+		drive->moveDistance(3.5_in);
+		drive->waitUntilSettled();
+		rollers(-125);
+		drive->moveDistance(-15_in);
+		drive->waitUntilSettled();
+		rollers(0);*/
 
 	//FRONT AUTON
 	/*drive->setMaxVelocity(75);
