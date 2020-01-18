@@ -217,7 +217,7 @@ void autonomous() {
 	drive->setMaxVelocity(80);
 	drive->turnAngle(-100_deg);
 	drive->waitUntilSettled();
-	drive->moveDistance(13.5_in);
+	drive->moveDistance(14_in);
 	drive->waitUntilSettled();
 	rollers(-50);
 	pros::delay(1000);
