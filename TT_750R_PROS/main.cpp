@@ -119,13 +119,13 @@ void driveControl(){
 }
 
 void stack(){
-			tilterAuto->setTarget(872);
-			tilterAuto->waitUntilSettled();
-			rollers(-100);
-			drive->setMaxVelocity(45);
-			drive->moveDistance(-1_ft);
-			drive->waitUntilSettled();
-			rollers(0);
+	tilter.moveRelative(2200, 100);
+	pros::delay(1000);
+	drive->moveDistance(3_in);
+	drive->waitUntilSettled();
+	rollers(-100);
+	drive->moveDistance(-15_in);
+	drive->waitUntilSettled();
 }
 
 void deploy()
@@ -203,12 +203,8 @@ void autonomous() {
 	drive->moveDistance(-1_ft);*/
 
 	//BACK BLUE AUTON
-	/*rollers(-200);
-	drive->setMaxVelocity(75);
-	pros::delay(3000);
-	rollers(200);*/
 	rollers(-125);
-	pros::delay(1300);
+	pros::delay(1000);
 	rollers(200);
 	drive->setMaxVelocity(75);
 	drive->moveDistance(52_in);
@@ -219,16 +215,16 @@ void autonomous() {
 	drive->setMaxVelocity(80);
 	drive->turnAngle(-100_deg);
 	drive->waitUntilSettled();
-	drive->moveDistance(13.8_in);
+	drive->moveDistance(13.2_in);
 	drive->waitUntilSettled();
 	rollers(-70);
 	pros::delay(720);
 	rollers(0);
 	tilter.moveRelative(2200, 100);
-	pros::delay(2000);
-	drive->moveDistance(3_in);
+	pros::delay(800);
+	drive->moveDistance(3.4_in);
 	drive->waitUntilSettled();
-	rollers(-100);
+	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
 	rollers(0);
