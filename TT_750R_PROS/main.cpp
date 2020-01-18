@@ -131,7 +131,7 @@ void stack(){
 void deploy()
 {
 	rollers(-100);
-	pros::delay(1500);
+	//pros::delay(1500);
 	drive->moveDistance(1_in);
 }
 
@@ -207,8 +207,9 @@ void autonomous() {
 	drive->setMaxVelocity(75);
 	pros::delay(3000);
 	rollers(200);*/
-	deploy();
-	/*rollers(200);
+	rollers(-100);
+	pros::delay(1000);
+	rollers(200);
 	drive->setMaxVelocity(75);
 	drive->moveDistance(52_in);
 	drive->waitUntilSettled();
@@ -230,7 +231,7 @@ void autonomous() {
 	rollers(-100);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
-	rollers(0);*/
+	rollers(0);
 
 	//stack();
 	/*rollers(-70);
