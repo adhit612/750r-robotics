@@ -1,6 +1,6 @@
 #include "main.h"
 
-//MOTOR PORTS 4 10
+//MOTOR PORTS 4 10 8
 int DRIVE_MOTOR_FL = 12;
 int DRIVE_MOTOR_FR = -19;
 int DRIVE_MOTOR_BL = 11;
@@ -8,7 +8,7 @@ int DRIVE_MOTOR_BR = -20;
 int TILTER = 1;
 int LIFT = -9;
 int LEFT_ROLLER = 6;
-int RIGHT_ROLLER = -8;
+int RIGHT_ROLLER = -3;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
