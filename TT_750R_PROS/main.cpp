@@ -1,10 +1,10 @@
 #include "main.h"
 
-//MOTOR PORTS 4 10
-int DRIVE_MOTOR_FL = 12;
-int DRIVE_MOTOR_FR = -19;
-int DRIVE_MOTOR_BL = 11;
-int DRIVE_MOTOR_BR = -20;
+//MOTOR PORTS BROKEN = 4 10
+int8_t DRIVE_MOTOR_FL = 12;
+int8_t DRIVE_MOTOR_FR = -19;
+int8_t DRIVE_MOTOR_BL = 11;
+int8_t DRIVE_MOTOR_BR = -20;
 int TILTER = 1;
 int LIFT = -9;
 int LEFT_ROLLER = 6;
@@ -37,8 +37,6 @@ ControllerButton driveToggle(ControllerDigital::L1);
 ControllerButton right(ControllerDigital::right);
 ControllerButton stackButton(ControllerDigital::left);
 
-bool fastDrive=true;
-
 auto drive = ChassisControllerBuilder()
 .withMotors({DRIVE_MOTOR_FL, DRIVE_MOTOR_BL}, {DRIVE_MOTOR_FR, DRIVE_MOTOR_BR})
 .withDimensions(AbstractMotor::gearset::green, {{4_in, 12_in}, imev5GreenTPR})
@@ -48,7 +46,6 @@ auto tilterAuto = AsyncPosControllerBuilder()
 .withMotor(tilter)
 .withMaxVelocity(50)
 .build();
-
 
 //double tilterTemperature = pros::tilter::get_temperature();
 //pros::Controller::set_text(tilterTemperature);
@@ -60,16 +57,13 @@ void rollers(int speed){
 
 void intakeControl(){
 	if(intakeIn.isPressed()){
-		rollerL.moveVelocity(200);
-		rollerR.moveVelocity(200);
+		rollers(200);
 	}
 	else if(intakeOut.isPressed()){
-		rollerL.moveVelocity(-200);
-		rollerR.moveVelocity(-200);
+		rollers(-200);
 	}
 	else{
-		rollerL.moveVelocity(0);
-		rollerR.moveVelocity(0);
+		rollers(0);
 	}
 }
 
@@ -114,7 +108,7 @@ void liftControl(){
 void driveControl(){
 	if(driveToggle.isPressed())
     	drive->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY)/2,(controller.getAnalog(ControllerAnalog::rightX)/2));
-		else
+	else
 			drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
 }
 
@@ -158,7 +152,7 @@ void initialize() {
 	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
-	tilter.tarePosition();
+	lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 }
 
 /**
@@ -247,7 +241,7 @@ void autonomous() {
 	drive->waitUntilSettled();
 	rollers(0);
 
-	//FRONT AUTON BLUE ANTITIP
+	//FRONT BLUE AUTON BLUE ANTITIP
 	/*drive->setMaxVelocity(75);
 	drive->moveDistance(10_in);
 	drive->waitUntilSettled();
@@ -305,7 +299,6 @@ void opcontrol() {
 		liftControl();
 		if(stackButton.isPressed())
 			stack();
-
 		pros::delay(20);
 	}
 }
