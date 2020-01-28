@@ -110,6 +110,7 @@ void driveControl(){
 void stack(){
 	error=trayTarget-trayPot.get();
 	while(fabs(error)>10){
+		error=trayTarget-trayPot.get();
 		tilter.moveVelocity(50);
 	}
 }
