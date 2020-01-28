@@ -1,14 +1,19 @@
 #include "main.h"
 
-//MOTOR PORTS BROKEN = 4 10
-int8_t DRIVE_MOTOR_FL = 12;
+//MOTOR PORTS BROKEN = 4 10 12
+int8_t DRIVE_MOTOR_FL = 15;
 int8_t DRIVE_MOTOR_FR = -19;
 int8_t DRIVE_MOTOR_BL = 11;
 int8_t DRIVE_MOTOR_BR = -20;
-int TILTER = 1;
-int LIFT = -9;
+int TILTER = -1;
+int LIFT = 4;
 int LEFT_ROLLER = 6;
 int RIGHT_ROLLER = -8;
+
+int liftTarget;
+int trayTarget=2060;
+int trayMid;
+int error;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -19,7 +24,8 @@ Motor driveFL(DRIVE_MOTOR_FL);
 Motor driveFR(DRIVE_MOTOR_FR);
 Motor driveBL(DRIVE_MOTOR_BL);
 Motor driveBR(DRIVE_MOTOR_BR);
-Potentiometer pot(1);
+Potentiometer liftPot('B');
+Potentiometer trayPot('C');
 
 Controller controller;
 
@@ -81,28 +87,17 @@ void magazineControl(){
 }
 
 void liftControl(){
-	/*int target=3747;
-	int error=pot.get()-target;
 	if(liftUp.isPressed()){
-		lift.moveVelocity(100);
-		tilter.moveVelocity(30);
-		while(error>10){
-    	tilter.moveVelocity(30);}
-		while(error<-10){
-	    	tilter.moveVelocity(-30);}
+		lift.moveVelocity(80);
+		tilter.moveVelocity(70);
 	}
 	else if(liftDown.isPressed()){
-		lift.moveVelocity(-100);
-		tilter.moveVelocity(-30);
-		while(error>10){
-    	tilter.moveVelocity(30);}
-		while(error<-10){
-	    	tilter.moveVelocity(-30);}
+		lift.moveVelocity(-80);
+		tilter.moveVelocity(-50);
 	}
 	else{
 		lift.moveVelocity(0);
-		lift.setBrakeMode(AbstractMotor::brakeMode::hold);
-	}*/
+	}
 }
 
 void driveControl(){
@@ -113,13 +108,10 @@ void driveControl(){
 }
 
 void stack(){
-	tilter.moveRelative(2200, 100);
-	pros::delay(1000);
-	drive->moveDistance(3_in);
-	drive->waitUntilSettled();
-	rollers(-100);
-	drive->moveDistance(-15_in);
-	drive->waitUntilSettled();
+	error=trayTarget-trayPot.get();
+	while(fabs(error)>10){
+		tilter.moveVelocity(50);
+	}
 }
 
 void deploy()
@@ -127,6 +119,15 @@ void deploy()
 	rollers(-100);
 	//pros::delay(1500);
 	drive->moveDistance(1_in);
+}
+
+void towerMacro(){
+	int error = liftTarget-liftPot.get();
+
+	while(error<10)
+	{
+		lift.moveVelocity(100);
+	}
 }
 
 /**
@@ -145,14 +146,11 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	driveBL.setBrakeMode(AbstractMotor::brakeMode::hold);
-	driveBR.setBrakeMode(AbstractMotor::brakeMode::hold);
-	driveFL.setBrakeMode(AbstractMotor::brakeMode::hold);
-	driveFR.setBrakeMode(AbstractMotor::brakeMode::hold);
 	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 	lift.setBrakeMode(AbstractMotor::brakeMode::hold);
+	tilter.tarePosition();
 }
 
 /**
@@ -186,6 +184,12 @@ void competition_initialize() {}
  */
  //auto  liftTask = AsyncVelControllerBuilder::posPID()
 void autonomous() {
+
+	driveBL.setBrakeMode(AbstractMotor::brakeMode::hold);
+	driveBR.setBrakeMode(AbstractMotor::brakeMode::hold);
+	driveFL.setBrakeMode(AbstractMotor::brakeMode::hold);
+	driveFR.setBrakeMode(AbstractMotor::brakeMode::hold);
+
 
 	//BACK BLUE AUTON
 	/*rollers(-125);
@@ -232,7 +236,7 @@ void autonomous() {
 	rollers(-70);
 	pros::delay(720);
 	rollers(0);
-	tilter.moveRelative(2200, 100);
+	tilter.moveRelative(2700, 100);
 	pros::delay(800);
 	drive->moveDistance(4_in);
 	drive->waitUntilSettled();
@@ -293,12 +297,22 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
+		if(right.isPressed())
+		controller.setText(1, 1, std::to_string(trayPot.get()));
+
+		driveBL.setBrakeMode(AbstractMotor::brakeMode::brake);
+		driveBR.setBrakeMode(AbstractMotor::brakeMode::brake);
+		driveFL.setBrakeMode(AbstractMotor::brakeMode::brake);
+		driveFR.setBrakeMode(AbstractMotor::brakeMode::brake);
+
 		driveControl();
 		intakeControl();
 		magazineControl();
 		liftControl();
-		if(stackButton.isPressed())
+
+		if(stackButton.isPressed()){
 			stack();
+		}
 		pros::delay(20);
 	}
 }
