@@ -10,10 +10,11 @@ int LIFT = 4;
 int LEFT_ROLLER = 6;
 int RIGHT_ROLLER = -8;
 
+
+//TARGETS FOR MACROS
 int liftTarget;
 int trayTarget=2060;
-int trayMid;
-int error;
+int trayMid=1000;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -53,9 +54,6 @@ auto tilterAuto = AsyncPosControllerBuilder()
 .withMaxVelocity(50)
 .build();
 
-//double tilterTemperature = pros::tilter::get_temperature();
-//pros::Controller::set_text(tilterTemperature);
-
 void rollers(int speed){
 	rollerL.moveVelocity(speed);
 	rollerR.moveVelocity(speed);
@@ -75,27 +73,32 @@ void intakeControl(){
 
 void magazineControl(){
 	if(magazineForward.isPressed())
-  {
+	{
 		tilter.moveVelocity(50);
   }
-	else if(magazineBackward.isPressed()){
+	else if(magazineBackward.isPressed())
+	{
 		tilter.moveVelocity(-100);
   }
-	else{
+	else
+	{
 		tilter.moveVelocity(0);
 	}
 }
 
 void liftControl(){
-	if(liftUp.isPressed()){
+	if(liftUp.isPressed())
+	{
 		lift.moveVelocity(80);
 		tilter.moveVelocity(70);
 	}
-	else if(liftDown.isPressed()){
+	else if(liftDown.isPressed())
+	{
 		lift.moveVelocity(-80);
-		tilter.moveVelocity(-50);
+		tilter.moveVelocity(-60);
 	}
-	else{
+	else
+	{
 		lift.moveVelocity(0);
 	}
 }
@@ -107,9 +110,11 @@ void driveControl(){
 			drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
 }
 
-void stack(){
-	error=trayTarget-trayPot.get();
-	while(fabs(error)>10){
+void stack()
+{
+	int error=trayTarget-trayPot.get();
+	while(fabs(error)>10)
+	{
 		error=trayTarget-trayPot.get();
 		tilter.moveVelocity(50);
 	}
@@ -122,11 +127,12 @@ void deploy()
 	drive->moveDistance(1_in);
 }
 
-void towerMacro(){
+void towerMacro()
+{
 	int error = liftTarget-liftPot.get();
-
-	while(error<10)
+	while(fabs(error)>10)
 	{
+		error = liftTarget-liftPot.get();
 		lift.moveVelocity(100);
 	}
 }
@@ -298,9 +304,6 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
-		if(right.isPressed())
-		controller.setText(1, 1, std::to_string(trayPot.get()));
-
 		driveBL.setBrakeMode(AbstractMotor::brakeMode::brake);
 		driveBR.setBrakeMode(AbstractMotor::brakeMode::brake);
 		driveFL.setBrakeMode(AbstractMotor::brakeMode::brake);
