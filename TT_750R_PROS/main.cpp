@@ -10,10 +10,11 @@ int LIFT = 4;
 int LEFT_ROLLER = 6;
 int RIGHT_ROLLER = -8;
 
-int liftTarget;
+int liftTarget = 0;;
 int trayTarget=2060;
 int trayMid;
 int error;
+int error2;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -42,7 +43,10 @@ ControllerButton driveToggle(ControllerDigital::L1);
 
 ControllerButton right(ControllerDigital::right);
 ControllerButton stackButton(ControllerDigital::left);
+ControllerButton middleTowerButton(ControllerDigital::down);
 
+//
+//
 auto drive = ChassisControllerBuilder()
 .withMotors({DRIVE_MOTOR_FL, DRIVE_MOTOR_BL}, {DRIVE_MOTOR_FR, DRIVE_MOTOR_BR})
 .withDimensions(AbstractMotor::gearset::green, {{4_in, 12_in}, imev5GreenTPR})
@@ -131,6 +135,19 @@ void towerMacro(){
 	}
 }
 
+void middleTower(){
+	trayTarget = 2820;
+	liftTarget = 2000;
+	error=trayTarget-trayPot.get();
+	error2 = liftTarget-liftPot.get();
+	while(fabs(error)>10 && fabs(error2)>10){
+		error=trayTarget-trayPot.get();
+		error2 = liftTarget - liftPot.get();
+		tilter.moveVelocity(50);
+		lift.moveVelocity(50);
+	}
+}
+//
 /**
  * A callback function for LLEMU's center button.
  *
@@ -300,6 +317,8 @@ void opcontrol() {
 	while (true) {
 		if(right.isPressed())
 		controller.setText(1, 1, std::to_string(trayPot.get()));
+		controller.setText(1, 1, std::to_string(liftPot.get()));
+
 
 		driveBL.setBrakeMode(AbstractMotor::brakeMode::brake);
 		driveBR.setBrakeMode(AbstractMotor::brakeMode::brake);
@@ -310,6 +329,11 @@ void opcontrol() {
 		intakeControl();
 		magazineControl();
 		liftControl();
+
+		if(middleTowerButton.isPressed())
+		{
+			middleTower();
+		}
 
 		if(stackButton.isPressed()){
 			stack();
