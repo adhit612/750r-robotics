@@ -1,6 +1,6 @@
 #include "main.h"
 
-//MOTOR PORTS BROKEN = 4 10 12
+//MOTOR PORTS BROKEN = 10 12
 int8_t DRIVE_MOTOR_FL = 15;
 int8_t DRIVE_MOTOR_FR = -19;
 int8_t DRIVE_MOTOR_BL = 11;
@@ -12,7 +12,7 @@ int RIGHT_ROLLER = -8;
 
 
 //TARGETS FOR MACROS
-int liftTarget;
+int liftTarget=2223;
 int trayTarget=2060;
 int trayMid=1000;
 
@@ -43,6 +43,7 @@ ControllerButton driveToggle(ControllerDigital::L1);
 
 ControllerButton right(ControllerDigital::right);
 ControllerButton stackButton(ControllerDigital::left);
+ControllerButton tower(ControllerDigital::down);
 
 auto drive = ChassisControllerBuilder()
 .withMotors({DRIVE_MOTOR_FL, DRIVE_MOTOR_BL}, {DRIVE_MOTOR_FR, DRIVE_MOTOR_BR})
@@ -87,15 +88,16 @@ void magazineControl(){
 }
 
 void liftControl(){
+	int error = liftTarget-liftPot.get();
 	if(liftUp.isPressed())
 	{
-		lift.moveVelocity(80);
-		tilter.moveVelocity(70);
+			lift.moveVelocity(80);
+		//tilter.moveVelocity(70);
 	}
 	else if(liftDown.isPressed())
 	{
 		lift.moveVelocity(-80);
-		tilter.moveVelocity(-60);
+		//tilter.moveVelocity(-60);
 	}
 	else
 	{
@@ -316,6 +318,11 @@ void opcontrol() {
 
 		if(stackButton.isPressed()){
 			stack();
+		}
+
+		if(tower.isPressed())
+		{
+			towerMacro();
 		}
 		pros::delay(20);
 	}
