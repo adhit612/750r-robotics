@@ -15,6 +15,7 @@ int RIGHT_ROLLER = -8;
 int liftTarget=2223;
 int trayTarget=2060;
 int trayMid=1000;
+int liftTargetTwo = 2006;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -41,9 +42,10 @@ ControllerButton liftDown(ControllerDigital::Y);
 
 ControllerButton driveToggle(ControllerDigital::L1);
 
-ControllerButton right(ControllerDigital::right);
+ControllerButton lowTowerButton(ControllerDigital::right);
 ControllerButton stackButton(ControllerDigital::left);
 ControllerButton tower(ControllerDigital::down);
+
 
 auto drive = ChassisControllerBuilder()
 .withMotors({DRIVE_MOTOR_FL, DRIVE_MOTOR_BL}, {DRIVE_MOTOR_FR, DRIVE_MOTOR_BR})
@@ -122,6 +124,7 @@ void stack()
 	}
 }
 
+
 void deploy()
 {
 	rollers(-100);
@@ -135,6 +138,17 @@ void towerMacro()
 	while(fabs(error)>10)
 	{
 		error = liftTarget-liftPot.get();
+		lift.moveVelocity(100);
+	}
+}
+
+void lowTowerMacro()
+{
+	liftTargetTwo = 2006;
+	int error = liftTargetTwo-liftPot.get();
+	while(fabs(error)>10)
+	{
+		error = liftTargetTwo-liftPot.get();
 		lift.moveVelocity(100);
 	}
 }
@@ -229,25 +243,30 @@ void autonomous() {
 
 	//BACK RED AUTON
 	rollers(-125);
-	pros::delay(1000);
+	pros::delay(2000);
 	rollers(200);
+	lift.moveVelocity(-100);
+	pros::delay(1000);
 	drive->setMaxVelocity(75);
-	drive->moveDistance(52_in);
+	drive->moveDistance(45_in);
 	drive->waitUntilSettled();
 	rollers(0);
-	drive->moveDistance(-35_in);
+	drive->moveDistance(-25_in);
 	drive->waitUntilSettled();
-	drive->setMaxVelocity(80);
-	drive->turnAngle(100_deg);
+	drive->turnAngle(135_deg);
+	drive->moveDistance(15_in);
 	drive->waitUntilSettled();
-	drive->moveDistance(13_in);
-	drive->waitUntilSettled();
+	//drive->setMaxVelocity(80);
+	//drive->turnAngle(100_deg);
+	//drive->waitUntilSettled();
+	//drive->moveDistance(13_in);
+	//drive->waitUntilSettled();
 	rollers(-70);
 	pros::delay(720);
 	rollers(0);
-	tilter.moveRelative(2700, 100);
+	stack();
 	pros::delay(800);
-	drive->moveDistance(4_in);
+	drive->moveDistance(2_in);
 	drive->waitUntilSettled();
 	rollers(-125);
 	drive->moveDistance(-15_in);
@@ -268,17 +287,22 @@ void autonomous() {
 	drive->moveDistance(-1_ft);*/
 
 	//FRONT AUTON RED ANTITIP
-	/*drive->setMaxVelocity(75);
-	drive->moveDistance(10_in);
-	drive->waitUntilSettled();
-	drive->turnAngle(-85_deg);
-	drive->waitUntilSettled();
-	drive->moveDistance(10_in);
-	drive->waitUntilSettled();
-	rollers(-200);
-	pros::delay(1000);
+	/*rollers(-200);
+	pros::delay(2000);
+	rollers(200);
+	lift.moveVelocity(-80);
+	drive->setMaxVelocity(75);
+	drive->moveDistance(32_in);
 	rollers(0);
-	drive->moveDistance(-1_ft);*/
+	drive->waitUntilSettled();
+	drive->turnAngle(-135_deg);
+	drive->waitUntilSettled();
+	//drive->moveDistance(10_in);
+	//drive->waitUntilSettled();
+	//stack();
+	//drive->moveDistance(-1_ft);*/
+	//
+
 
 	//Programming Skills
 	/*rollers(-125);
@@ -323,6 +347,11 @@ void opcontrol() {
 		if(tower.isPressed())
 		{
 			towerMacro();
+		}
+
+		if(lowTowerButton.isPressed())
+		{
+			lowTowerMacro();
 		}
 		pros::delay(20);
 	}
