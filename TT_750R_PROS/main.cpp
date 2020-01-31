@@ -26,11 +26,15 @@ Motor driveFL(DRIVE_MOTOR_FL);
 Motor driveFR(DRIVE_MOTOR_FR);
 Motor driveBL(DRIVE_MOTOR_BL);
 Motor driveBR(DRIVE_MOTOR_BR);
+
+//POT DECLARATION
 Potentiometer liftPot('B');
 Potentiometer trayPot('C');
 
+//CONTROLLER
 Controller controller;
 
+//BUTTONS
 ControllerButton intakeIn(ControllerDigital::R1);
 ControllerButton intakeOut(ControllerDigital::R2);
 
@@ -46,7 +50,7 @@ ControllerButton lowTowerButton(ControllerDigital::right);
 ControllerButton stackButton(ControllerDigital::left);
 ControllerButton midTowerButton(ControllerDigital::down);
 
-
+//DRIVE
 auto drive = ChassisControllerBuilder()
 .withMotors({DRIVE_MOTOR_FL, DRIVE_MOTOR_BL}, {DRIVE_MOTOR_FR, DRIVE_MOTOR_BR})
 .withDimensions(AbstractMotor::gearset::green, {{4_in, 12_in}, imev5GreenTPR})
@@ -57,6 +61,7 @@ auto tilterAuto = AsyncPosControllerBuilder()
 .withMaxVelocity(50)
 .build();
 
+//USER CONTROL FUNCTIONS
 void rollers(int speed){
 	rollerL.moveVelocity(speed);
 	rollerR.moveVelocity(speed);
@@ -111,6 +116,7 @@ void driveControl(){
 			drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
 }
 
+//MACROS
 void stack()
 {
 	int error=trayTarget-trayPot.get();
@@ -119,14 +125,6 @@ void stack()
 		error=trayTarget-trayPot.get();
 		tilter.moveVelocity(50);
 	}
-}
-
-
-void deploy()
-{
-	rollers(-100);
-	//pros::delay(1500);
-	drive->moveDistance(1_in);
 }
 
 void midTowerMacro()
