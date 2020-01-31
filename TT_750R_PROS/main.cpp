@@ -44,7 +44,7 @@ ControllerButton driveToggle(ControllerDigital::L1);
 
 ControllerButton lowTowerButton(ControllerDigital::right);
 ControllerButton stackButton(ControllerDigital::left);
-ControllerButton tower(ControllerDigital::down);
+ControllerButton midTowerButton(ControllerDigital::down);
 
 
 auto drive = ChassisControllerBuilder()
@@ -340,7 +340,7 @@ void opcontrol() {
 			stack();
 		}
 
-		if(tower.isPressed())
+		if(midTowerButton.isPressed())
 		{
 			midTowerMacro();
 		}
