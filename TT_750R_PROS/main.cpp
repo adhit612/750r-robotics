@@ -12,10 +12,10 @@ int RIGHT_ROLLER = -8;
 
 
 //TARGETS FOR MACROS
-int liftTarget=2223;
+int midTowerTarget=2223;
 int trayTarget=2060;
 int trayMid=1000;
-int liftTargetTwo = 2006;
+int lowTowerTarget = 2006;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -90,16 +90,13 @@ void magazineControl(){
 }
 
 void liftControl(){
-	int error = liftTarget-liftPot.get();
 	if(liftUp.isPressed())
 	{
 			lift.moveVelocity(80);
-		//tilter.moveVelocity(70);
 	}
 	else if(liftDown.isPressed())
 	{
 		lift.moveVelocity(-80);
-		//tilter.moveVelocity(-60);
 	}
 	else
 	{
@@ -132,23 +129,22 @@ void deploy()
 	drive->moveDistance(1_in);
 }
 
-void towerMacro()
+void midTowerMacro()
 {
-	int error = liftTarget-liftPot.get();
+	int error = midTowerTarget-liftPot.get();
 	while(fabs(error)>10)
 	{
-		error = liftTarget-liftPot.get();
+		error = midTowerTarget-liftPot.get();
 		lift.moveVelocity(100);
 	}
 }
 
 void lowTowerMacro()
 {
-	liftTargetTwo = 2006;
-	int error = liftTargetTwo-liftPot.get();
+	int error = lowTowerTarget-liftPot.get();
 	while(fabs(error)>10)
 	{
-		error = liftTargetTwo-liftPot.get();
+		error = lowTowerTarget-liftPot.get();
 		lift.moveVelocity(100);
 	}
 }
@@ -346,7 +342,7 @@ void opcontrol() {
 
 		if(tower.isPressed())
 		{
-			towerMacro();
+			midTowerMacro();
 		}
 
 		if(lowTowerButton.isPressed())
