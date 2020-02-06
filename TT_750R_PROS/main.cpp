@@ -132,14 +132,16 @@ void stack()
 			break;
 		}
 		error=trayTarget-trayPot.get();
-		tilter.moveVelocity(50);
+		if(error<70)
+			tilter.moveVelocity(50);
+		else
+			tilter.moveVelocity(100);
 	}
 }
 
 void midTowerMacro()
 {
 	int error = midTowerTarget-liftPot.get();
-	int count=0;
 	while(fabs(error)>10)
 	{
 		if(override.isPressed())
@@ -185,7 +187,6 @@ void initialize() {
 	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 	lift.setBrakeMode(AbstractMotor::brakeMode::hold);
-	tilter.tarePosition();
 }
 
 /**
@@ -217,11 +218,12 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
- //auto  liftTask = AsyncVelControllerBuilder::posPID()
 void autonomous() {
 	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
+
+
 	//BACK BLUE AUTON
-	/*lift.moveVelocity(-100);
+	lift.moveVelocity(-100);
 	rollers(-200);
 	pros::delay(1200);
 	rollers(200);
@@ -229,21 +231,20 @@ void autonomous() {
 	drive->moveDistance(45_in);
 	drive->waitUntilSettled();
 	rollers(0);
-	drive->moveDistance(-25_in);
+	drive->moveDistance(-26.5_in);
 	drive->waitUntilSettled();
-	drive->turnAngle(110_deg);
-	drive->moveDistance(17_in);
+	drive->turnAngle(-100_deg);
+	drive->moveDistance(15_in);
 	drive->waitUntilSettled();
+	rollers(-70);
 	pros::delay(720);
 	rollers(0);
-	stack();
-	drive->waitUntilSettled();
-	pros::delay(800);
-	drive->waitUntilSettled();
+	tilter.moveRelative(2600,100);
+	pros::delay(2000);
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
-	rollers(0);*/
+	rollers(0);
 
 	//BACK RED AUTON
 	/*lift.moveVelocity(-100);
@@ -270,70 +271,15 @@ void autonomous() {
 	drive->waitUntilSettled();
 	rollers(0);*/
 
-	//Blue BACK 1 point
-	/*lift.moveVelocity(-100);
-	rollers(-200);
-	pros::delay(1200);
-	rollers(200);
-	drive->moveDistance(16_in);
-	drive->waitUntilSettled();
-	rollers(-200);
-	pros::delay(1500);
-	drive->moveDistance(-1_ft);
-	drive->waitUntilSettled();
-	rollers(0);*/
-
 	//ONE POINT
-	rollers(-200);
+	/*rollers(-200);
 	pros::delay(1200);
 	lift.moveVelocity(-100);
 	drive->moveDistance(20_in);
 	drive->waitUntilSettled();
-	pros::delay(1500);
-	drive->moveDistance(-1_ft);
-	drive->waitUntilSettled();
-	rollers(0);
-
-
-	//Red BACK 1 point
-	/*lift.moveVelocity(-100);
-	rollers(-200);
-	pros::delay(1200);
-	rollers(200);
-	drive->moveDistance(11_in);
-	drive->waitUntilSettled();
-	rollers(-200);
-	pros::delay(1500);
 	drive->moveDistance(-1_ft);
 	drive->waitUntilSettled();
 	rollers(0);*/
-
-	//Blue FORNT 1 point
-	/*lift.moveVelocity(-100);
-	rollers(-200);
-	pros::delay(1200);
-	rollers(200);
-	drive->moveDistance(11_in);
-	drive->waitUntilSettled();
-	rollers(-200);
-	pros::delay(1500);
-	drive->moveDistance(-1_ft);
-	drive->waitUntilSettled();
-	rollers(0);*/
-
-	//Red FRONT 1 point
-	/*lift.moveVelocity(-100);
-	rollers(-200);
-	pros::delay(1200);
-	rollers(200);
-	drive->moveDistance(11_in);
-	drive->waitUntilSettled();
-	rollers(-200);
-	pros::delay(1500);
-	drive->moveDistance(-1_ft);
-	drive->waitUntilSettled();
-	rollers(0);*/
-
 	}
 
 
