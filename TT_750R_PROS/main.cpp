@@ -132,10 +132,10 @@ void stack()
 			break;
 		}
 		error=trayTarget-trayPot.get();
-		if(error<70)
-			tilter.moveVelocity(50);
-		else
+		if(fabs(error)>70)
 			tilter.moveVelocity(100);
+		else
+			tilter.moveVelocity(50);
 	}
 }
 
@@ -249,23 +249,22 @@ void autonomous() {
 	//BACK RED AUTON
 	/*lift.moveVelocity(-100);
 	rollers(-200);
-	pros::delay(1000);
+	pros::delay(1200);
 	rollers(200);
 	drive->setMaxVelocity(75);
 	drive->moveDistance(45_in);
 	drive->waitUntilSettled();
 	rollers(0);
-	drive->moveDistance(-25_in);
+	drive->moveDistance(-26.5_in);
 	drive->waitUntilSettled();
-	drive->turnAngle(110_deg);
-	drive->moveDistance(17_in);
+	drive->turnAngle(100_deg);
+	drive->moveDistance(15_in);
 	drive->waitUntilSettled();
+	rollers(-70);
 	pros::delay(720);
 	rollers(0);
-	stack();
-	pros::delay(800);
-	drive->moveDistance(0.5_in);
-	drive->waitUntilSettled();
+	tilter.moveRelative(2600,100);
+	pros::delay(2000);
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
