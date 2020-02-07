@@ -1,4 +1,3 @@
-
 #include "main.h"
 
 //MOTOR PORTS BROKEN = 10 12
@@ -15,7 +14,7 @@ int RIGHT_ROLLER = -8;
 //TARGETS FOR MACROS
 int midTowerTarget=2223;
 //increqsing value means tilter goes forward less
-int trayTarget=2030;
+int trayTarget=2050;
 int trayMid=1000;
 int lowTowerTarget = 2006;
 
@@ -132,10 +131,7 @@ void stack()
 			break;
 		}
 		error=trayTarget-trayPot.get();
-		if(fabs(error)>70)
-			tilter.moveVelocity(100);
-		else
-			tilter.moveVelocity(50);
+		tilter.moveVelocity(50);
 	}
 }
 
@@ -233,12 +229,12 @@ void autonomous() {
 	rollers(0);
 	drive->moveDistance(-26.5_in);
 	drive->waitUntilSettled();
-	drive->turnAngle(-100_deg);
-	drive->moveDistance(15_in);
+	drive->turnAngle(-118_deg);
+	drive->moveDistance(20_in);
 	drive->waitUntilSettled();
-	rollers(-70);
-	pros::delay(720);
-	rollers(0);
+	//rollers(-70);
+	//pros::delay(720);
+	//rollers(0);
 	tilter.moveRelative(2600,100);
 	pros::delay(2000);
 	rollers(-125);
