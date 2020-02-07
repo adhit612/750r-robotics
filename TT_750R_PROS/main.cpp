@@ -131,7 +131,10 @@ void stack()
 			break;
 		}
 		error=trayTarget-trayPot.get();
-		tilter.moveVelocity(50);
+		if(fabs(error)>70)
+			tilter.moveVelocity(100);
+		else
+			tilter.moveVelocity(50);
 	}
 }
 
