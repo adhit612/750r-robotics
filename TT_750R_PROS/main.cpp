@@ -13,9 +13,7 @@ int RIGHT_ROLLER = -8;
 
 //TARGETS FOR MACROS
 int midTowerTarget=2223;
-//increqsing value means tilter goes forward less
 int trayTarget=2050;
-int trayMid=1000;
 int lowTowerTarget = 2006;
 
 
