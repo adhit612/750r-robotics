@@ -13,9 +13,8 @@ int RIGHT_ROLLER = -8;
 
 //TARGETS FOR MACROS
 int midTowerTarget=2223;
-int trayTarget=2050;
+int trayTarget=2093;
 int lowTowerTarget = 2006;
-
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -41,8 +40,8 @@ ControllerButton intakeOut(ControllerDigital::R2);
 ControllerButton magazineForward(ControllerDigital::X);
 ControllerButton magazineBackward(ControllerDigital::B);
 
-ControllerButton liftUp(ControllerDigital::A);
-ControllerButton liftDown(ControllerDigital::Y);
+ControllerButton liftUp(ControllerDigital::L1);
+ControllerButton liftDown(ControllerDigital::L2);
 
 ControllerButton driveToggle(ControllerDigital::L1);
 
@@ -58,10 +57,6 @@ auto drive = ChassisControllerBuilder()
 .withDimensions(AbstractMotor::gearset::green, {{4_in, 12_in}, imev5GreenTPR})
 .build();
 
-auto tilterAuto = AsyncPosControllerBuilder()
-.withMotor(tilter)
-.withMaxVelocity(50)
-.build();
 
 //USER CONTROL FUNCTIONS
 void rollers(int speed){
@@ -74,7 +69,10 @@ void intakeControl(){
 		rollers(200);
 	}
 	else if(intakeOut.isPressed()){
-		rollers(-200);
+		if(liftPot.get()>1500)
+			rollers(-100);
+		else
+			rollers(-200);
 	}
 	else{
 		rollers(0);
@@ -121,6 +119,8 @@ void driveControl(){
 //MACROS
 void stack()
 {
+	rollerL.setBrakeMode(AbstractMotor::brakeMode::coast);
+	rollerR.setBrakeMode(AbstractMotor::brakeMode::coast);
 	int error=trayTarget-trayPot.get();
 	while(fabs(error)>10)
 	{
@@ -129,10 +129,11 @@ void stack()
 			break;
 		}
 		error=trayTarget-trayPot.get();
-		if(fabs(error)>70)
-			tilter.moveVelocity(100);
+		if(fabs(error)>500)
+			tilter.moveVelocity(65);
 		else
-			tilter.moveVelocity(50);
+			tilter.moveVelocity(30);
+
 	}
 }
 
@@ -298,6 +299,10 @@ void opcontrol() {
 		driveBR.setBrakeMode(AbstractMotor::brakeMode::brake);
 		driveFL.setBrakeMode(AbstractMotor::brakeMode::brake);
 		driveFR.setBrakeMode(AbstractMotor::brakeMode::brake);
+		rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
+		rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
+
+		controller.setText(1, 7, std::to_string(lift.getTemperature()));
 
 		driveControl();
 		intakeControl();
