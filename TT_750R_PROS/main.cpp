@@ -15,6 +15,7 @@ int RIGHT_ROLLER = -8;
 int midTowerTarget=2223;
 int trayTarget=2093;
 int lowTowerTarget = 2006;
+int downTarget=3494;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -119,8 +120,8 @@ void driveControl(){
 //MACROS
 void stack()
 {
-	rollerL.setBrakeMode(AbstractMotor::brakeMode::coast);
-	rollerR.setBrakeMode(AbstractMotor::brakeMode::coast);
+	//rollerL.setBrakeMode(AbstractMotor::brakeMode::coast);
+	//rollerR.setBrakeMode(AbstractMotor::brakeMode::coast);
 	int error=trayTarget-trayPot.get();
 	while(fabs(error)>10)
 	{
@@ -130,9 +131,26 @@ void stack()
 		}
 		error=trayTarget-trayPot.get();
 		if(fabs(error)>500)
+		{
 			tilter.moveVelocity(65);
+			lift.moveVelocity(-100);
+		}
 		else
 			tilter.moveVelocity(30);
+
+	}
+}
+
+void comeback(){
+	int error=downTarget-trayPot.get();
+	while(fabs(error)>10)
+	{
+		error=downTarget-trayPot.get();
+		if(override.isPressed())
+		{
+			break;
+		}
+		tilter.moveVelocity(-100);
 
 	}
 }
@@ -181,10 +199,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
-	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
-	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
-	lift.setBrakeMode(AbstractMotor::brakeMode::hold);
+
 }
 
 /**
@@ -231,12 +246,16 @@ void autonomous() {
 	rollers(0);
 	drive->moveDistance(-26.5_in);
 	drive->waitUntilSettled();
-	drive->turnAngle(-118_deg);
-	drive->moveDistance(20_in);
+	drive->turnAngle(-105_deg);
+	drive->moveDistance(11_in);
 	drive->waitUntilSettled();
-	//rollers(-70);
-	//pros::delay(720);
-	//rollers(0);
+	driveBL.setBrakeMode(AbstractMotor::brakeMode::brake);
+	driveBR.setBrakeMode(AbstractMotor::brakeMode::brake);
+	driveFL.setBrakeMode(AbstractMotor::brakeMode::brake);
+	driveFR.setBrakeMode(AbstractMotor::brakeMode::brake);
+	rollers(-70);
+	pros::delay(300);
+	rollers(0);
 	tilter.moveRelative(2600,100);
 	pros::delay(2000);
 	rollers(-125);
@@ -255,11 +274,15 @@ void autonomous() {
 	rollers(0);
 	drive->moveDistance(-26.5_in);
 	drive->waitUntilSettled();
-	drive->turnAngle(100_deg);
-	drive->moveDistance(15_in);
+	drive->turnAngle(105_deg);
+	drive->moveDistance(11_in);
 	drive->waitUntilSettled();
+	driveBL.setBrakeMode(AbstractMotor::brakeMode::brake);
+	driveBR.setBrakeMode(AbstractMotor::brakeMode::brake);
+	driveFL.setBrakeMode(AbstractMotor::brakeMode::brake);
+	driveFR.setBrakeMode(AbstractMotor::brakeMode::brake);
 	rollers(-70);
-	pros::delay(720);
+	pros::delay(300);
 	rollers(0);
 	tilter.moveRelative(2600,100);
 	pros::delay(2000);
@@ -269,14 +292,17 @@ void autonomous() {
 	rollers(0);*/
 
 	//ONE POINT
-	/*rollers(-200);
+	drive->setMaxVelocity(50);
+	rollers(-200);
 	pros::delay(1200);
+	rollers(0);
 	lift.moveVelocity(-100);
 	drive->moveDistance(20_in);
 	drive->waitUntilSettled();
+	rollers(-100);
 	drive->moveDistance(-1_ft);
 	drive->waitUntilSettled();
-	rollers(0);*/
+	rollers(0);
 	}
 
 
@@ -299,8 +325,10 @@ void opcontrol() {
 		driveBR.setBrakeMode(AbstractMotor::brakeMode::brake);
 		driveFL.setBrakeMode(AbstractMotor::brakeMode::brake);
 		driveFR.setBrakeMode(AbstractMotor::brakeMode::brake);
+		tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 		rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 		rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
+		lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 
 		controller.setText(1, 7, std::to_string(lift.getTemperature()));
 
@@ -310,7 +338,10 @@ void opcontrol() {
 		liftControl();
 
 		if(stackButton.isPressed()){
-			stack();
+			//if(trayPot.get()>2557)
+				stack();
+			//else
+			//	comeback();
 		}
 
 		if(midTowerButton.isPressed())
