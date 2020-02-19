@@ -1,12 +1,12 @@
 #include "main.h"
 
 //MOTOR PORTS BROKEN = 10 12
-int8_t DRIVE_MOTOR_FL = 16;
+int8_t DRIVE_MOTOR_FL = 12;
 int8_t DRIVE_MOTOR_FR = -19;
 int8_t DRIVE_MOTOR_BL = 11;
 int8_t DRIVE_MOTOR_BR = -20;
 int TILTER = -1;
-int LIFT = 4;
+int LIFT = 16;
 int LEFT_ROLLER = 6;
 int RIGHT_ROLLER = -8;
 
@@ -403,8 +403,6 @@ void opcontrol() {
 		rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 		rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 		lift.setBrakeMode(AbstractMotor::brakeMode::hold);
-
-
 
 		controller.setText(1, 7, std::to_string(lift.getTemperature()));
 
