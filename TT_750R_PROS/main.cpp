@@ -407,7 +407,6 @@ void opcontrol() {
 		controller.setText(1, 7, std::to_string(lift.getTemperature()));
 
 		pros::Task drive (driveTask, (void*)"PROS", TASK_PRIORITY_MAX);
-		driveControl();
 		intakeControl();
 		magazineControl();
 		liftControl();
