@@ -67,6 +67,30 @@ void driveTask(void* param){
 		drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
 }
 
+void stackTask(void* param){
+	if(stackButton.isPressed()){
+		rollerL.setBrakeMode(AbstractMotor::brakeMode::brake);
+		rollerR.setBrakeMode(AbstractMotor::brakeMode::brake);
+		int error=trayTarget-trayPot.get();
+		while(fabs(error)>10)
+		{
+			if(override.isPressed())
+			{
+				break;
+			}
+			error=trayTarget-trayPot.get();
+			if(fabs(error)>500)
+			{
+				tilter.moveVelocity(65);
+				lift.moveVelocity(-100);
+			}
+			else
+				tilter.moveVelocity(30);
+		}
+			pros::delay(20);
+	}
+}
+
 void pidTurn(int value){
 	double kP;
 	double kI;
@@ -407,11 +431,13 @@ void opcontrol() {
 		controller.setText(1, 7, std::to_string(lift.getTemperature()));
 
 		pros::Task drive (driveTask, (void*)"PROS", TASK_PRIORITY_MAX);
+		pros::Task stack (stackTask, (void*)"PROS", TASK_PRIORITY_DEFAULT);
+		driveControl();
 		intakeControl();
 		magazineControl();
 		liftControl();
 		descore();
-		stack();
+		//stack();
 
 
 		if(midTowerButton.isPressed())
