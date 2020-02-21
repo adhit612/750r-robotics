@@ -291,19 +291,6 @@ void autonomous() {
 	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 
-	//BACK BLUE ODOM
-	/*lift.moveVelocity(-100);
-	rollers(-200);
-	pros::delay(1200);
-	rollers(200);
-	drive->setMaxVelocity(75);
-	drive->setState({0_in, 0_in, 0_deg});
-	drive->driveToPoint({30_in, 0_in});
-	drive->waitUntilSettled();
-	rollers(0);
-	drive->turnToPoint({0_in, 0_in});
-	drive->waitUntilSettled();*/
-
 	//BACK BLUE AUTON
 	lift.moveVelocity(-100);
 	rollers(-200);
@@ -312,13 +299,14 @@ void autonomous() {
 	drive->setMaxVelocity(75);
 	drive->moveDistance(45.5_in);
 	drive->waitUntilSettled();
+	pros::delay(500);
 	rollers(0);
 	drive->moveDistance(-27.5_in);
 	drive->waitUntilSettled();
 	drive->setMaxVelocity(50);
 	drive->turnAngle(-100_deg);
 	drive->waitUntilSettled();
-	drive->setMaxVelocity(80);
+	drive->setMaxVelocity(75);
 	drive->moveDistance(14.5_in);
 	drive->waitUntilSettled();
 	rollers(-70);
@@ -339,6 +327,7 @@ void autonomous() {
 	drive->setMaxVelocity(75);
 	drive->moveDistance(45.5_in);
 	drive->waitUntilSettled();
+	pros::delay(500);
 	rollers(0);
 	drive->moveDistance(-27.5_in);
 	drive->waitUntilSettled();
