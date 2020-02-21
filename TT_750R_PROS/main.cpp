@@ -14,8 +14,12 @@ int RIGHT_ROLLER = -8;
 //TARGETS FOR MACROS
 int midTowerTarget=2223;
 int trayTarget=2093;
-int lowTowerTarget = 2006;
+//2006 before
+int lowTowerTarget = 1750;
 int downTarget=3494;
+
+bool macroHappening = false;
+bool temperatureShow = true;
 
 //MOTOR DECLARATION
 Motor tilter(TILTER);
@@ -151,7 +155,7 @@ void liftControl(){
 	{
 		lift.moveVelocity(-100);
 	}
-	else if(liftUp.changedToReleased() || liftDown.changedToReleased())
+	else if(!macroHappening)
 	{
 		lift.moveVelocity(0);
 	}
@@ -204,38 +208,25 @@ void comeback(){
 
 void midTowerMacro()
 {
-	/*int error = midTowerTarget-liftPot.get();
-	while(fabs(error)>10)
-	{
-		if(override.isPressed())
-		{
-			break;
-		}
-		error = midTowerTarget-liftPot.get();
-		lift.moveVelocity(100);
-	}
-	pros::delay(20);*/
 	if(midTowerButton.changedToPressed())
 	{
+		macroHappening = true;
 		liftController->setTarget(midTowerTarget);
 	}
+	// if(liftController.isSettled()){
+	// 	macroHappening = false;
+	// }
 }
+
 
 void lowTowerMacro()
 {
-	// int error = lowTowerTarget-liftPot.get();
-	// while(fabs(error)>10)
-	// {
-	// 	if(override.isPressed())
-	// 	{
-	// 		break;
-	// 	}
-	// 	error = lowTowerTarget-liftPot.get();
-	// 	lift.moveVelocity(100);
-	// }
-	// pros::delay(20);
 	if(lowTowerButton.changedToPressed()){
+		macroHappening = true;
 		liftController->setTarget(lowTowerTarget);
+	}
+	if(liftController.isSettled()){
+		macroHappening = false;
 	}
 }
 
@@ -428,7 +419,10 @@ void opcontrol() {
 		rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 		lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 
+		while(temperatureShow)
+		{
 		controller.setText(1, 7, std::to_string(lift.getTemperature()));
+	}
 
 		pros::Task drive (driveTask, (void*)"PROS", TASK_PRIORITY_MAX);
 		//pros::Task stack (stackTask, (void*)"PROS", TASK_PRIORITY_DEFAULT);
