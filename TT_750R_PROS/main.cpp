@@ -1,9 +1,9 @@
 #include "main.h"
 
-//MOTOR PORTS BROKEN = 10 12 11
-int8_t DRIVE_MOTOR_FL = 13;
+//MOTOR PORTS BROKEN = 10 12
+int8_t DRIVE_MOTOR_FL = 12;
 int8_t DRIVE_MOTOR_FR = -19;
-int8_t DRIVE_MOTOR_BL = 12;
+int8_t DRIVE_MOTOR_BL = 11;
 int8_t DRIVE_MOTOR_BR = -20;
 int TILTER = -1;
 int LIFT = 16;
@@ -61,15 +61,12 @@ auto drive = ChassisControllerBuilder()
 .withOdometry()
 .buildOdometry();
 
-auto liftController = AsyncPosControllerBuilder()
-											.withMotor(LIFT)
-											.build();
-
 
 //TASKS
 void driveTask(void* param){
 		drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
 }
+
 void stackTask(void* param){
 	if(stackButton.isPressed()){
 		rollerL.setBrakeMode(AbstractMotor::brakeMode::brake);
@@ -93,7 +90,6 @@ void stackTask(void* param){
 			pros::delay(20);
 	}
 }
-
 
 void pidTurn(int value){
 	double kP;
@@ -151,7 +147,7 @@ void liftControl(){
 	{
 		lift.moveVelocity(-100);
 	}
-	else if(liftUp.changedToReleased() || liftDown.changedToReleased())
+	else
 	{
 		lift.moveVelocity(0);
 	}
@@ -204,7 +200,7 @@ void comeback(){
 
 void midTowerMacro()
 {
-	/*int error = midTowerTarget-liftPot.get();
+	int error = midTowerTarget-liftPot.get();
 	while(fabs(error)>10)
 	{
 		if(override.isPressed())
@@ -214,29 +210,22 @@ void midTowerMacro()
 		error = midTowerTarget-liftPot.get();
 		lift.moveVelocity(100);
 	}
-	pros::delay(20);*/
-	if(midTowerButton.changedToPressed())
-	{
-		liftController->setTarget(midTowerTarget);
-	}
+	pros::delay(20);
 }
 
 void lowTowerMacro()
 {
-	// int error = lowTowerTarget-liftPot.get();
-	// while(fabs(error)>10)
-	// {
-	// 	if(override.isPressed())
-	// 	{
-	// 		break;
-	// 	}
-	// 	error = lowTowerTarget-liftPot.get();
-	// 	lift.moveVelocity(100);
-	// }
-	// pros::delay(20);
-	if(lowTowerButton.changedToPressed()){
-		liftController->setTarget(lowTowerTarget);
+	int error = lowTowerTarget-liftPot.get();
+	while(fabs(error)>10)
+	{
+		if(override.isPressed())
+		{
+			break;
+		}
+		error = lowTowerTarget-liftPot.get();
+		lift.moveVelocity(100);
 	}
+	pros::delay(20);
 }
 
 /**
@@ -430,9 +419,9 @@ void opcontrol() {
 
 		controller.setText(1, 7, std::to_string(lift.getTemperature()));
 
-		pros::Task drive (driveTask, (void*)"PROS", TASK_PRIORITY_MAX);
-		//pros::Task stack (stackTask, (void*)"PROS", TASK_PRIORITY_DEFAULT);
-		//pros::Task lowTowerMacro (lowTowerMacroTask, (void*)"PROS", TASK_PRIORITY_DEFAULT);
+		//pros::Task drive (driveTask, (void*)"PROS", TASK_PRIORITY_MAX, TASK_STACK_DEPTH_DEFAULT);
+		//pros::Task stack (stackTask, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
+		driveControl();
 		driveControl();
 		intakeControl();
 		magazineControl();
@@ -441,11 +430,15 @@ void opcontrol() {
 		stack();
 
 
-		// if(midTowerButton.isPressed())
-		// {
-		 	midTowerMacro();
-		// }
-		lowTowerMacro();
+		if(midTowerButton.isPressed())
+		{
+			midTowerMacro();
+		}
+
+		if(lowTowerButton.isPressed())
+		{
+			lowTowerMacro();
+		}
 		pros::delay(20);
 	}
 }
