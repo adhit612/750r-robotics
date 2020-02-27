@@ -1,15 +1,14 @@
 #include "main.h"
 
 //MOTOR PORTS BROKEN = 10 12
-int8_t DRIVE_MOTOR_FL = 12;
+int8_t DRIVE_MOTOR_FL = 13;
 int8_t DRIVE_MOTOR_FR = -19;
-int8_t DRIVE_MOTOR_BL = 11;
+int8_t DRIVE_MOTOR_BL = 12;
 int8_t DRIVE_MOTOR_BR = -20;
 int TILTER = -1;
 int LIFT = 16;
 int LEFT_ROLLER = 6;
 int RIGHT_ROLLER = -8;
-
 
 //TARGETS FOR MACROS
 int midTowerTarget=2223;
@@ -30,6 +29,8 @@ Motor driveBR(DRIVE_MOTOR_BR);
 //POT DECLARATION
 Potentiometer liftPot('B');
 Potentiometer trayPot('C');
+
+pros::Imu inertial(14);
 
 //CONTROLLER
 Controller controller;
@@ -91,10 +92,28 @@ void stackTask(void* param){
 	}
 }
 
-void pidTurn(int value){
-	double kP;
-	double kI;
-	double kD;
+void inertialTurnRight(int degrees){
+	int error = inertial.get_heading() - degrees;
+	while(fabs(error)>.1)
+	{
+		error = inertial.get_heading() - degrees;
+		driveFL.moveVelocity(50);
+		driveBL.moveVelocity(50);
+		driveFR.moveVelocity(-50);
+		driveBR.moveVelocity(-50);
+	}
+}
+
+void inertialTurnLeft(int degrees){
+	int error = inertial.get_heading() - degrees;
+	while(fabs(error)>.1)
+	{
+		error = inertial.get_heading() - degrees;
+		driveFL.moveVelocity(-50);
+		driveBL.moveVelocity(-50);
+		driveFR.moveVelocity(50);
+		driveBR.moveVelocity(50);
+	}
 }
 
 //USER CONTROL FUNCTIONS
@@ -109,7 +128,7 @@ void intakeControl(){
 	}
 	else if(intakeOut.isPressed()){
 		if(liftPot.get()>1500)
-			rollers(-100);
+			rollers(-200);
 		else
 			rollers(-200);
 	}
@@ -126,7 +145,15 @@ void descore(){
 void magazineControl(){
 	if(magazineForward.isPressed())
 	{
-		tilter.moveVelocity(50);
+		//tilter.moveVelocity(50);
+		int error=trayTarget-trayPot.get();
+		if(fabs(error)>500)
+		{
+			tilter.moveVelocity(65);
+			lift.moveVelocity(-100);
+		}
+		else
+			tilter.moveVelocity(30);
   }
 	else if(magazineBackward.isPressed())
 	{
@@ -141,7 +168,7 @@ void magazineControl(){
 void liftControl(){
 	if(liftUp.isPressed())
 	{
-			lift.moveVelocity(80);
+		lift.moveVelocity(90);
 	}
 	else if(liftDown.isPressed())
 	{
@@ -244,6 +271,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	inertial.reset();
 }
 
 /**
@@ -281,7 +309,7 @@ void autonomous() {
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 
 	//BACK BLUE AUTON
-	lift.moveVelocity(-100);
+	/*lift.moveVelocity(-100);
 	rollers(-200);
 	pros::delay(1200);
 	rollers(200);
@@ -308,7 +336,8 @@ void autonomous() {
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
-	rollers(0);
+	rollers(0);*/
+	//
 
 	//BACK RED AUTON
 	/*lift.moveVelocity(-100);
@@ -321,6 +350,7 @@ void autonomous() {
 	pros::delay(500);
 	rollers(0);
 	drive->moveDistance(-27.5_in);
+	rollers(100);
 	drive->waitUntilSettled();
 	drive->setMaxVelocity(50);
 	drive->turnAngle(105_deg);
@@ -338,7 +368,7 @@ void autonomous() {
 	rollers(0);*/
 
 	//ONE POINT
-	/*drive->setMaxVelocity(50);
+	drive->setMaxVelocity(50);
 	rollers(-200);
 	pros::delay(1200);
 	rollers(0);
@@ -349,7 +379,7 @@ void autonomous() {
 	rollers(-100);
 	drive->moveDistance(-1_ft);
 	drive->waitUntilSettled();
-	rollers(0);*/
+	rollers(0);
 
 	//TWO POINT RED
 	/*drive->setMaxVelocity(75);
@@ -414,16 +444,14 @@ void autonomous() {
  */
 void opcontrol() {
 	while (true) {
+		controller.setText(1, 7, std::to_string(inertial.get_heading()));
 		tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 		rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 		rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 		lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 
-		controller.setText(1, 7, std::to_string(lift.getTemperature()));
-
 		//pros::Task drive (driveTask, (void*)"PROS", TASK_PRIORITY_MAX, TASK_STACK_DEPTH_DEFAULT);
 		//pros::Task stack (stackTask, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
-		driveControl();
 		driveControl();
 		intakeControl();
 		magazineControl();
