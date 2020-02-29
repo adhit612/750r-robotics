@@ -92,15 +92,46 @@ void stackTask(void* param){
 	}
 }
 
+void pidTurnRight(int value){
+	double kP;
+	double kI;
+	double kD;
+
+	double error; //sensor value - desired value
+	double prevError = 0; // error 20 ms ago
+	double derivative; // error - previous error
+	double totalError = 0; // total error + error
+
+	while(fabs(error)>.50){
+		double sensorValue = inertial.get_heading();
+
+		error = sensorValue - value;
+
+		derivative = error-prevError;
+
+		totalError+=error;
+
+		double speed = (error*kP) + (derivative*kD);
+
+		driveBL.moveVelocity(speed);
+		driveFL.moveVelocity(speed);
+		driveBR.moveVelocity(-speed);
+		driveFR.moveVelocity(-speed);
+
+		prevError = error;
+		pros::delay(20);
+	}
+}
+
 void inertialTurnRight(int degrees){
 	int error = inertial.get_heading() - degrees;
 	while(fabs(error)>.1)
 	{
 		error = inertial.get_heading() - degrees;
-		driveFL.moveVelocity(50);
-		driveBL.moveVelocity(50);
-		driveFR.moveVelocity(-50);
-		driveBR.moveVelocity(-50);
+		driveFL.moveVelocity(75);
+		driveBL.moveVelocity(75);
+		driveFR.moveVelocity(-75);
+		driveBR.moveVelocity(-75);
 	}
 }
 
@@ -109,10 +140,10 @@ void inertialTurnLeft(int degrees){
 	while(fabs(error)>.1)
 	{
 		error = inertial.get_heading() - degrees;
-		driveFL.moveVelocity(-50);
-		driveBL.moveVelocity(-50);
-		driveFR.moveVelocity(50);
-		driveBR.moveVelocity(50);
+		driveFL.moveVelocity(-75);
+		driveBL.moveVelocity(-75);
+		driveFR.moveVelocity(75);
+		driveBR.moveVelocity(75);
 	}
 }
 
@@ -308,8 +339,10 @@ void autonomous() {
 	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 
+	//inertialTurnRight(90);
+
 	//BACK BLUE AUTON
-	/*lift.moveVelocity(-100);
+	lift.moveVelocity(-100);
 	rollers(-200);
 	pros::delay(1200);
 	rollers(200);
@@ -336,8 +369,7 @@ void autonomous() {
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
-	rollers(0);*/
-	//
+	rollers(0);
 
 	//BACK RED AUTON
 	/*lift.moveVelocity(-100);
@@ -368,7 +400,7 @@ void autonomous() {
 	rollers(0);*/
 
 	//ONE POINT
-	drive->setMaxVelocity(50);
+	/*drive->setMaxVelocity(50);
 	rollers(-200);
 	pros::delay(1200);
 	rollers(0);
@@ -379,7 +411,7 @@ void autonomous() {
 	rollers(-100);
 	drive->moveDistance(-1_ft);
 	drive->waitUntilSettled();
-	rollers(0);
+	rollers(0);*/
 
 	//TWO POINT RED
 	/*drive->setMaxVelocity(75);
