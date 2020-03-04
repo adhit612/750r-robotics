@@ -55,6 +55,8 @@ ControllerButton override(ControllerDigital::up);
 
 ControllerButton descoreButton(ControllerDigital::Y);
 
+ControllerButton A(ControllerDigital::A);
+
 //DRIVE
 auto drive = ChassisControllerBuilder()
 .withMotors({DRIVE_MOTOR_FL, DRIVE_MOTOR_BL}, {DRIVE_MOTOR_FR, DRIVE_MOTOR_BR})
@@ -64,6 +66,10 @@ auto drive = ChassisControllerBuilder()
 
 
 //TASKS
+
+void runTasks(){
+
+}
 void driveTask(void* param){
 		drive->getModel()->arcade((controller.getAnalog(ControllerAnalog::leftY)), (controller.getAnalog(ControllerAnalog::rightX)/2));
 }
@@ -93,19 +99,20 @@ void stackTask(void* param){
 }
 
 void pidTurnRight(int value){
-	double kP;
+	double kP=.4;
 	double kI;
 	double kD;
+	value=inertial.get_heading()+value;
 
-	double error; //sensor value - desired value
+	double error=200; //sensor value - desired value
 	double prevError = 0; // error 20 ms ago
 	double derivative; // error - previous error
 	double totalError = 0; // total error + error
 
-	while(fabs(error)>.50){
+	while(fabs(error)>1){
 		double sensorValue = inertial.get_heading();
 
-		error = sensorValue - value;
+		error = fabs(sensorValue-value); //try value - sensorValue
 
 		derivative = error-prevError;
 
@@ -119,13 +126,14 @@ void pidTurnRight(int value){
 		driveFR.moveVelocity(-speed);
 
 		prevError = error;
+
 		pros::delay(20);
 	}
 }
 
 void inertialTurnRight(int degrees){
 	int error = inertial.get_heading() - degrees;
-	while(fabs(error)>.1)
+	while(fabs(error)>5)
 	{
 		error = inertial.get_heading() - degrees;
 		driveFL.moveVelocity(75);
@@ -335,11 +343,12 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
+	//tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
+	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 
-	//inertialTurnRight(90);
+	//pidTurnRight(90);
 
 	//BACK BLUE AUTON
 	lift.moveVelocity(-100);
@@ -349,10 +358,8 @@ void autonomous() {
 	drive->setMaxVelocity(75);
 	drive->moveDistance(45.5_in);
 	drive->waitUntilSettled();
-	pros::delay(500);
-	rollers(0);
-	drive->moveDistance(-27.5_in);
 	rollers(100);
+	drive->moveDistance(-27.5_in);
 	drive->waitUntilSettled();
 	rollers(0);
 	drive->setMaxVelocity(50);
@@ -364,8 +371,8 @@ void autonomous() {
 	rollers(-70);
 	pros::delay(720);
 	rollers(0);
-	tilter.moveRelative(2550,100);
-	pros::delay(2000);
+	tilter.moveRelative(3200, 100);
+	pros::delay(1800);
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
@@ -391,8 +398,8 @@ void autonomous() {
 	rollers(-70);
 	pros::delay(740);
 	rollers(0);
-	tilter.moveRelative(2550,100);
-	pros::delay(2500);
+	tilter.moveRelative(3200,100);
+	pros::delay(1800);
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	tilter.moveVelocity(-100);
@@ -482,8 +489,6 @@ void opcontrol() {
 		rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 		lift.setBrakeMode(AbstractMotor::brakeMode::hold);
 
-		//pros::Task drive (driveTask, (void*)"PROS", TASK_PRIORITY_MAX, TASK_STACK_DEPTH_DEFAULT);
-		//pros::Task stack (stackTask, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT);
 		driveControl();
 		intakeControl();
 		magazineControl();
@@ -491,6 +496,8 @@ void opcontrol() {
 		descore();
 		stack();
 
+		if(A.isPressed())
+			pidTurnRight(90);
 
 		if(midTowerButton.isPressed())
 		{
