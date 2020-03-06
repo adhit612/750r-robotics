@@ -109,7 +109,7 @@ void pidTurnRight(int value){
 	double derivative; // error - previous error
 	double totalError = 0; // total error + error
 
-	while(fabs(error)>1){
+	while(fabs(error)>3){
 		double sensorValue = inertial.get_heading();
 
 		error = fabs(sensorValue-value); //try value - sensorValue
@@ -124,6 +124,39 @@ void pidTurnRight(int value){
 		driveFL.moveVelocity(speed);
 		driveBR.moveVelocity(-speed);
 		driveFR.moveVelocity(-speed);
+
+		prevError = error;
+
+		pros::delay(20);
+	}
+}
+
+void pidTurnLeft(int value){
+	double kP=.4;
+	double kI;
+	double kD;
+	//value=inertial.get_heading()+value;
+
+	double error=200; //sensor value - desired value
+	double prevError = 0; // error 20 ms ago
+	double derivative; // error - previous error
+	double totalError = 0; // total error + error
+
+	while(fabs(error)>3){
+		double sensorValue = inertial.get_heading();
+
+		error = fabs(sensorValue-value); //try value - sensorValue
+
+		derivative = error-prevError;
+
+		totalError+=error;
+
+		double speed = (error*kP) + (derivative*kD);
+
+		driveBL.moveVelocity(-speed);
+		driveFL.moveVelocity(-speed);
+		driveBR.moveVelocity(speed);
+		driveFR.moveVelocity(speed);
 
 		prevError = error;
 
@@ -343,23 +376,91 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	//tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerL.setBrakeMode(AbstractMotor::brakeMode::hold);
 	rollerR.setBrakeMode(AbstractMotor::brakeMode::hold);
 	tilter.setBrakeMode(AbstractMotor::brakeMode::hold);
 
-	//pidTurnRight(90);
-
-	//BACK BLUE AUTON
+	//PROG SKILLS
 	lift.moveVelocity(-100);
 	rollers(-200);
 	pros::delay(1200);
 	rollers(200);
+	lift.moveVelocity(0);
 	drive->setMaxVelocity(75);
-	drive->moveDistance(45.5_in);
+	drive->moveDistance(42.5_in);
 	drive->waitUntilSettled();
 	rollers(100);
-	drive->moveDistance(-27.5_in);
+	drive->moveDistance(-24.5_in);
+	drive->waitUntilSettled();
+	rollers(0);
+	drive->setMaxVelocity(50);
+	drive->turnAngle(105_deg);
+	drive->moveDistance(13_in);
+	drive->waitUntilSettled();
+	rollers(-70);
+	pros::delay(770);
+	rollers(0);
+	tilter.moveRelative(3200,100);
+	pros::delay(1800);
+	rollers(-125);
+	drive->setMaxVelocity(50);
+	drive->moveDistance(-20_in);
+	tilter.moveVelocity(-100);
+	drive->waitUntilSettled();
+	rollers(0);
+	drive->setMaxVelocity(40);
+	//drive->turnAngle(116_deg);
+	pidTurnRight(134);
+	//drive->waitUntilSettled();
+	rollers(50);
+	drive->moveDistance(32_in);
+	drive->waitUntilSettled();
+	rollers(0);
+	drive->moveDistance(-5.5_in);
+	drive->waitUntilSettled();
+	lift.moveRelative(1500, 100);
+	pros::delay(2000);
+	drive->moveDistance(3_in);
+	drive->waitUntilSettled();
+	rollers(-200);
+	drive->moveDistance(2_in);
+	drive->waitUntilSettled();
+	pros::delay(500);
+	drive->moveDistance(-12_in);
+	drive->waitUntilSettled();
+	lift.moveVelocity(-100);
+	drive->turnAngle(75_deg);
+	drive->waitUntilSettled();
+	rollers(50);
+	drive->moveDistance(32_in);
+	drive->waitUntilSettled();
+	lift.moveVelocity(0);
+	rollers(0);
+	drive->moveDistance(-5.5_in);
+	drive->waitUntilSettled();
+	lift.moveRelative(1000, 100);
+	pros::delay(2000);
+	drive->moveDistance(3_in);
+	drive->waitUntilSettled();
+	rollers(-200);
+	drive->moveDistance(2_in);
+	drive->waitUntilSettled();
+	rollers(0);
+	drive->moveDistance(-6_in);
+
+
+	//pidTurnRight(90);
+
+	//BACK BLUE AUTON
+	/*lift.moveVelocity(-100);
+	rollers(-200);
+	pros::delay(1200);
+	rollers(200);
+	drive->setMaxVelocity(75);
+	drive->moveDistance(44.5_in);
+	drive->waitUntilSettled();
+	rollers(100);
+	drive->moveDistance(-26.5_in);
 	drive->waitUntilSettled();
 	rollers(0);
 	drive->setMaxVelocity(50);
@@ -376,7 +477,7 @@ void autonomous() {
 	rollers(-125);
 	drive->moveDistance(-15_in);
 	drive->waitUntilSettled();
-	rollers(0);
+	rollers(0);*/
 
 	//BACK RED AUTON
 	/*lift.moveVelocity(-100);
@@ -384,19 +485,18 @@ void autonomous() {
 	pros::delay(1200);
 	rollers(200);
 	drive->setMaxVelocity(75);
-	drive->moveDistance(45.5_in);
+	drive->moveDistance(44.5_in);
 	drive->waitUntilSettled();
-	pros::delay(500);
-	rollers(0);
-	drive->moveDistance(-27.5_in);
 	rollers(100);
+	drive->moveDistance(-26.5_in);
 	drive->waitUntilSettled();
+	rollers(0);
 	drive->setMaxVelocity(50);
 	drive->turnAngle(105_deg);
 	drive->moveDistance(13_in);
 	drive->waitUntilSettled();
 	rollers(-70);
-	pros::delay(740);
+	pros::delay(770);
 	rollers(0);
 	tilter.moveRelative(3200,100);
 	pros::delay(1800);
@@ -422,22 +522,10 @@ void autonomous() {
 
 	//TWO POINT RED
 	/*drive->setMaxVelocity(75);
-	rollers(-200);
-	pros::delay(1200);
-	rollers(0);
+	//pros::delay(3000);
+	pidTurnLeft(330);
 	rollers(200);
-	drive->moveDistance(25_in);
-	drive->moveDistance(-25.5_in);
-	rollers(0);
-	drive->turnAngle(-90_deg);
-	drive->moveDistance(27_in);
-	rollers(-70);
-	pros::delay(740);
-	rollers(0);
-	tilter.moveRelative(2600,100);
-	pros::delay(2000);
-	rollers(-125);
-	drive->moveDistance(-15_in);
+	drive->moveDistance(8_in);
 	drive->waitUntilSettled();
 	rollers(0);*/
 
@@ -497,7 +585,7 @@ void opcontrol() {
 		stack();
 
 		if(A.isPressed())
-			pidTurnRight(90);
+			//pidTurnLeft(330);
 
 		if(midTowerButton.isPressed())
 		{
