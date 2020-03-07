@@ -99,6 +99,39 @@ void stackTask(void* param){
 }
 
 void pidTurnRight(int value){
+	double kP=.65;
+	double kI;
+	double kD;
+	value=inertial.get_heading()+value;
+
+	double error=200; //sensor value - desired value
+	double prevError = 0; // error 20 ms ago
+	double derivative; // error - previous error
+	double totalError = 0; // total error + error
+
+	while(fabs(error)>3){
+		double sensorValue = inertial.get_heading();
+
+		error = fabs(sensorValue-value); //try value - sensorValue
+
+		derivative = error-prevError;
+
+		totalError+=error;
+
+		double speed = (error*kP) + (derivative*kD);
+
+		driveBL.moveVelocity(25);
+		driveFL.moveVelocity(25);
+		driveBR.moveVelocity(-25);
+		driveFR.moveVelocity(-25);
+
+		prevError = error;
+
+		pros::delay(20);
+	}
+}
+
+void pidTurnRightSlow(int value){
 	double kP=.4;
 	double kI;
 	double kD;
@@ -132,6 +165,39 @@ void pidTurnRight(int value){
 }
 
 void pidTurnLeft(int value){
+	double kP=.65;
+	double kI;
+	double kD;
+	//value=inertial.get_heading()+value;
+
+	double error=200; //sensor value - desired value
+	double prevError = 0; // error 20 ms ago
+	double derivative; // error - previous error
+	double totalError = 0; // total error + error
+
+	while(fabs(error)>3){
+		double sensorValue = inertial.get_heading();
+
+		error = fabs(sensorValue-value); //try value - sensorValue
+
+		derivative = error-prevError;
+
+		totalError+=error;
+
+		double speed = (error*kP) + (derivative*kD);
+
+		driveBL.moveVelocity(-25);
+		driveFL.moveVelocity(-25);
+		driveBR.moveVelocity(25);
+		driveFR.moveVelocity(25);
+
+		prevError = error;
+
+		pros::delay(20);
+	}
+}
+
+void pidTurnLeftSlow(int value){
 	double kP=.4;
 	double kI;
 	double kD;
@@ -157,6 +223,39 @@ void pidTurnLeft(int value){
 		driveFL.moveVelocity(-speed);
 		driveBR.moveVelocity(speed);
 		driveFR.moveVelocity(speed);
+
+		prevError = error;
+
+		pros::delay(20);
+	}
+}
+
+void pidTurnRightLikeLeft(int value){
+	double kP=.4;
+	double kI;
+	double kD;
+	//value=inertial.get_heading()+value;
+
+	double error=200; //sensor value - desired value
+	double prevError = 0; // error 20 ms ago
+	double derivative; // error - previous error
+	double totalError = 0; // total error + error
+
+	while(fabs(error)>3){
+		double sensorValue = inertial.get_heading();
+
+		error = fabs(sensorValue-value); //try value - sensorValue
+
+		derivative = error-prevError;
+
+		totalError+=error;
+
+		double speed = (error*kP) + (derivative*kD);
+
+		driveBL.moveVelocity(speed);
+		driveFL.moveVelocity(speed);
+		driveBR.moveVelocity(-speed);
+		driveFR.moveVelocity(-speed);
 
 		prevError = error;
 
@@ -410,7 +509,7 @@ void autonomous() {
 	rollers(0);
 	drive->setMaxVelocity(40);
 	//drive->turnAngle(116_deg);
-	pidTurnRight(134);
+	pidTurnRightSlow(132);
 	//drive->waitUntilSettled();
 	rollers(50);
 	drive->moveDistance(32_in);
@@ -429,18 +528,18 @@ void autonomous() {
 	drive->moveDistance(-12_in);
 	drive->waitUntilSettled();
 	lift.moveVelocity(-100);
-	drive->turnAngle(75_deg);
+	drive->turnAngle(85_deg);
 	drive->waitUntilSettled();
-	rollers(50);
+	rollers(60);
 	drive->moveDistance(32_in);
 	drive->waitUntilSettled();
 	lift.moveVelocity(0);
 	rollers(0);
-	drive->moveDistance(-5.5_in);
+	drive->moveDistance(-10.5_in);
 	drive->waitUntilSettled();
-	lift.moveRelative(1000, 100);
+	lift.moveRelative(1100, 100);
 	pros::delay(2000);
-	drive->moveDistance(3_in);
+	drive->moveDistance(4_in);
 	drive->waitUntilSettled();
 	rollers(-200);
 	drive->moveDistance(2_in);
@@ -457,7 +556,7 @@ void autonomous() {
 	pros::delay(1200);
 	rollers(200);
 	drive->setMaxVelocity(75);
-	drive->moveDistance(44.5_in);
+	drive->moveDistance(42.5_in);
 	drive->waitUntilSettled();
 	rollers(100);
 	drive->moveDistance(-26.5_in);
@@ -520,37 +619,69 @@ void autonomous() {
 	drive->waitUntilSettled();
 	rollers(0);*/
 
-	//TWO POINT RED
-	/*drive->setMaxVelocity(75);
-	//pros::delay(3000);
-	pidTurnLeft(330);
+
+	//FRONT RED
+	/*rollers(-200);
+	pros::delay(1200);
+	rollers(0);
+	lift.moveVelocity(-100);
+	drive->setMaxVelocity(75);
+	pidTurnRight(34);
 	rollers(200);
-	drive->moveDistance(8_in);
+	drive->moveDistance(21_in);
+	drive->waitUntilSettled();
+	rollers(0);
+	pidTurnLeft(274);
+	rollers(200);
+	drive->moveDistance(27.5_in);
+	drive->waitUntilSettled();
+	drive->waitUntilSettled();
+	rollers(0);
+	drive->turnAngle(-32_deg);
+	drive->moveDistance(6_in);
+	drive->waitUntilSettled();
+	rollers(-70);
+	pros::delay(770);
+	rollers(0);
+	tilter.moveRelative(3200,100);
+	pros::delay(1800);
+	rollers(-125);
+	drive->moveDistance(-15_in);
+	tilter.moveVelocity(-100);
 	drive->waitUntilSettled();
 	rollers(0);*/
 
-	//TWO POINT BLUE
-	/*drive->setMaxVelocity(75);
-	rollers(-200);
+	//FRONT BLUE
+	/*rollers(-200);
 	pros::delay(1200);
 	rollers(0);
+	lift.moveVelocity(-100);
+	drive->setMaxVelocity(75);
+	pidTurnLeft(325);
 	rollers(200);
-	drive->moveDistance(25_in);
-	drive->waitUntilSettled();
-	drive->moveDistance(-23_in);
+	drive->moveDistance(21_in);
 	drive->waitUntilSettled();
 	rollers(0);
-	drive->turnAngle(90_deg);
+	drive->setMaxVelocity(50);
+	drive->turnAngle(110_deg);
 	drive->waitUntilSettled();
-	drive->moveDistance(27_in);
+	drive->setMaxVelocity(75);
+	rollers(200);
+	drive->moveDistance(27.5_in);
+	drive->waitUntilSettled();
+	drive->waitUntilSettled();
+	rollers(0);
+	drive->turnAngle(37_deg);
+	drive->moveDistance(6_in);
 	drive->waitUntilSettled();
 	rollers(-70);
-	pros::delay(740);
+	pros::delay(770);
 	rollers(0);
-	tilter.moveRelative(2600,100);
-	pros::delay(2000);
+	tilter.moveRelative(3200,100);
+	pros::delay(1800);
 	rollers(-125);
 	drive->moveDistance(-15_in);
+	tilter.moveVelocity(-100);
 	drive->waitUntilSettled();
 	rollers(0);*/
 	}
